@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Search,
   Bell,
@@ -10,26 +10,20 @@ import {
   ShoppingCart,
   Contact2,
   User,
-} from "lucide-react";
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import type { DragEndEvent } from "@dnd-kit/core";
+} from 'lucide-react';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
 import {
   SortableContext,
   horizontalListSortingStrategy,
   arrayMove,
   useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import TopNavItem from "../ui/TopNavItem";
-import NotificationModal from "../ui/NotificationModal";
-import { NOTIFICATION_MOCKS } from "../../constants/mockData";
-import type { MainCategory, SubView } from "../../types";
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import TopNavItem from '../ui/TopNavItem';
+import NotificationModal from '../ui/NotificationModal';
+import { NOTIFICATION_MOCKS } from '../../constants/mockData';
+import type { MainCategory, SubView } from '../../types';
 
 interface HeaderProps {
   activeCategory: MainCategory;
@@ -46,15 +40,15 @@ interface NavItemConfig {
 }
 
 const NAV_ITEMS_DEFAULT: NavItemConfig[] = [
-  { id: "MY_PAGE",         label: "My A9",              icon: <LayoutDashboard size={20} /> },
-  { id: "APPROVAL",    label: "전자 결재",      icon: <CheckSquare size={20} /> },
-  { id: "RESERVATION", label: "자원 예약",      icon: <MapPin size={20} /> },
-  { id: "BOARD",       label: "사내 게시판",    icon: <MessageSquare size={20} /> },
-  { id: "REQUEST",     label: "구매/발급 요청", icon: <ShoppingCart size={20} /> },
-  { id: "CONTACT",     label: "연락처",         icon: <Contact2 size={20} /> },
+  { id: 'MY_PAGE', label: 'My A9', icon: <LayoutDashboard size={20} /> },
+  { id: 'APPROVAL', label: '전자 결재', icon: <CheckSquare size={20} /> },
+  { id: 'RESERVATION', label: '자원 예약', icon: <MapPin size={20} /> },
+  { id: 'BOARD', label: '사내 게시판', icon: <MessageSquare size={20} /> },
+  { id: 'REQUEST', label: '구매/발급 요청', icon: <ShoppingCart size={20} /> },
+  { id: 'CONTACT', label: '연락처', icon: <Contact2 size={20} /> },
 ];
 
-const LS_KEY = "header-nav-order";
+const LS_KEY = 'header-nav-order';
 
 function loadOrder(): MainCategory[] {
   try {
@@ -62,10 +56,7 @@ function loadOrder(): MainCategory[] {
     if (!raw) return NAV_ITEMS_DEFAULT.map(n => n.id);
     const parsed: MainCategory[] = JSON.parse(raw);
     const validIds = new Set(NAV_ITEMS_DEFAULT.map(n => n.id));
-    if (
-      parsed.length === NAV_ITEMS_DEFAULT.length &&
-      parsed.every(id => validIds.has(id))
-    ) {
+    if (parsed.length === NAV_ITEMS_DEFAULT.length && parsed.every(id => validIds.has(id))) {
       return parsed;
     }
     localStorage.removeItem(LS_KEY);
@@ -83,14 +74,9 @@ interface SortableNavItemProps {
 }
 
 function SortableNavItem({ config, active, onClick }: SortableNavItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: config.id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: config.id,
+  });
 
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
@@ -100,35 +86,20 @@ function SortableNavItem({ config, active, onClick }: SortableNavItemProps) {
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="touch-none"
-    >
-      <TopNavItem
-        icon={config.icon}
-        label={config.label}
-        active={active}
-        onClick={onClick}
-      />
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="touch-none">
+      <TopNavItem icon={config.icon} label={config.label} active={active} onClick={onClick} />
     </div>
   );
 }
 
 // ── 메인 Header ───────────────────────────────────────────────
-const Header: React.FC<HeaderProps> = ({
-  activeCategory,
-  onCategoryChange,
-  onLogout,
-}) => {
+const Header: React.FC<HeaderProps> = ({ activeCategory, onCategoryChange, onLogout }) => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [navOrder, setNavOrder] = useState<MainCategory[]>(loadOrder);
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
-  const unreadCount = NOTIFICATION_MOCKS.filter((n) => !n.isRead).length;
+  const unreadCount = NOTIFICATION_MOCKS.filter(n => !n.isRead).length;
 
   // 드래그 센서: 300ms 꾹 누르거나 8px 이동 시 활성화
   const sensors = useSensors(
@@ -139,35 +110,29 @@ const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        notificationRef.current &&
-        !notificationRef.current.contains(event.target as Node)
-      ) {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
         setIsNotificationOpen(false);
       }
     };
     if (isNotificationOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isNotificationOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target as Node)
-      ) {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
         setIsProfileOpen(false);
       }
     };
     if (isProfileOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isProfileOpen]);
 
@@ -192,37 +157,26 @@ const Header: React.FC<HeaderProps> = ({
         {/* 로고 */}
         <div
           className="flex items-center gap-3 group cursor-pointer"
-          onClick={() => onCategoryChange("MY_PAGE")}
+          onClick={() => onCategoryChange('MY_PAGE')}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && onCategoryChange("MY_PAGE")}
+          onKeyDown={e => e.key === 'Enter' && onCategoryChange('MY_PAGE')}
         >
-          <div className="w-10 h-10 bg-[#fafafa] rounded-md flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-slate-100">
-            <span className="text-blue-600 text-xl font-black italic">A9</span>
+          <div className="w-10 h-10 bg-[#fafafa] rounded-md flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+            <span className="text-blue-600 text-xs font-bold italic">Dash</span>
           </div>
         </div>
 
         {/* 드래그 가능한 Nav */}
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={navOrder}
-            strategy={horizontalListSortingStrategy}
-          >
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={navOrder} strategy={horizontalListSortingStrategy}>
             <nav className="flex items-center gap-2 h-full py-2">
               <GoogleAppButton
                 href="https://chat.google.com"
                 label="Google Chat"
                 icon={<IconGoogleChat />}
               />
-              <GoogleAppButton
-                href="https://mail.google.com"
-                label="Gmail"
-                icon={<IconGmail />}
-              />
+              <GoogleAppButton href="https://mail.google.com" label="Gmail" icon={<IconGmail />} />
               <GoogleAppButton
                 href="https://calendar.google.com"
                 label="Google Calendar"
@@ -258,7 +212,7 @@ const Header: React.FC<HeaderProps> = ({
         {/* 알림 */}
         <div className="relative" ref={notificationRef}>
           <button
-            onClick={() => setIsNotificationOpen((prev) => !prev)}
+            onClick={() => setIsNotificationOpen(prev => !prev)}
             className="relative w-9 h-9 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all cursor-pointer"
           >
             <Bell size={18} />
@@ -275,7 +229,6 @@ const Header: React.FC<HeaderProps> = ({
               onClose={() => setIsNotificationOpen(false)}
             />
           )}
-
         </div>
 
         {/* 프로필 드롭다운 */}
@@ -302,7 +255,10 @@ const Header: React.FC<HeaderProps> = ({
                 <p className="text-[11px] font-bold text-slate-400">i-on</p>
               </div>
               <button
-                onClick={() => { setIsProfileOpen(false); onLogout(); }}
+                onClick={() => {
+                  setIsProfileOpen(false);
+                  onLogout();
+                }}
                 className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-rose-500 hover:bg-rose-50 transition-colors cursor-pointer border-none bg-transparent"
               >
                 <LogOut size={15} />
@@ -347,11 +303,32 @@ function GoogleAppButton({
 function IconGmail() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="4" width="20" height="16" rx="2" fill="white" stroke="#E0E0E0" strokeWidth="0.5" />
+      <rect
+        x="2"
+        y="4"
+        width="20"
+        height="16"
+        rx="2"
+        fill="white"
+        stroke="#E0E0E0"
+        strokeWidth="0.5"
+      />
       <rect x="2" y="4" width="20" height="2" rx="1" fill="white" />
-      <path d="M2 6L12 13L22 6" stroke="#EA4335" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path
+        d="M2 6L12 13L22 6"
+        stroke="#EA4335"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+      />
       <path d="M2 7.5L12 14L22 7.5" stroke="#FBBC05" strokeWidth="0" fill="none" />
-      <path d="M3 5.5L12 12.5L21 5.5" stroke="#EA4335" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path
+        d="M3 5.5L12 12.5L21 5.5"
+        stroke="#EA4335"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -359,7 +336,10 @@ function IconGmail() {
 function IconGoogleChat() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#00AC47" />
+      <path
+        d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z"
+        fill="#00AC47"
+      />
       <circle cx="8" cy="10" r="1.5" fill="white" />
       <circle cx="12" cy="10" r="1.5" fill="white" />
       <circle cx="16" cy="10" r="1.5" fill="white" />
@@ -370,12 +350,23 @@ function IconGoogleChat() {
 function IconGoogleCalendar() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="4" width="20" height="18" rx="2" fill="white" stroke="#E0E0E0" strokeWidth="0.5" />
+      <rect
+        x="2"
+        y="4"
+        width="20"
+        height="18"
+        rx="2"
+        fill="white"
+        stroke="#E0E0E0"
+        strokeWidth="0.5"
+      />
       <rect x="2" y="4" width="20" height="5" rx="2" fill="#1A73E8" />
       <rect x="2" y="7" width="20" height="2" fill="#1A73E8" />
       <rect x="7" y="2" width="2" height="4" rx="1" fill="#1A73E8" />
       <rect x="15" y="2" width="2" height="4" rx="1" fill="#1A73E8" />
-      <text x="12" y="18" textAnchor="middle" fontSize="7" fontWeight="900" fill="#1A73E8">31</text>
+      <text x="12" y="18" textAnchor="middle" fontSize="7" fontWeight="900" fill="#1A73E8">
+        31
+      </text>
     </svg>
   );
 }

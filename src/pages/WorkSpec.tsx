@@ -7,15 +7,15 @@ const WorkSpec: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-10">
       {/* Profile Summary */}
       <div className="bg-[#fafafa] rounded-[1.25rem] p-10 border border-slate-100 shadow-sm flex items-center gap-10">
-        <div className="w-24 h-24 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-xl shadow-blue-500/30">
-          <User size={40} />
+        <div className="w-24 h-24 bg-white rounded-xl flex items-center justify-center text-white shadow-sm">
+          <User size={40} className="text-slate-300" />
         </div>
         <div>
           <div className="flex items-center gap-3 mb-2">
             <span className="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded">IT 운영본부</span>
             <span className="px-3 py-1 bg-slate-50 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded">경영지원팀</span>
           </div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">홍길동 과장 <span className="text-slate-400 font-bold ml-2">Lead Developer</span></h2>
+          <h2 className="text-3xl font-bold text-slate-900 tracking-wide">홍길동 과장 <span className="text-slate-400 font-bold ml-2">Lead Developer</span></h2>
         </div>
       </div>
 

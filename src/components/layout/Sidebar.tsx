@@ -19,7 +19,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ activeCategory, currentView, setCurrentView }) => {
   const renderSidebarContent = () => {
     switch (activeCategory) {
-      case 'MY_A9':
+      case 'MY_PAGE':
         return (
           <>
             <NavGroup title="내 정보">

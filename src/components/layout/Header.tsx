@@ -46,7 +46,7 @@ interface NavItemConfig {
 }
 
 const NAV_ITEMS_DEFAULT: NavItemConfig[] = [
-  { id: "MY_A9",       label: "마이 페이지",         icon: <LayoutDashboard size={20} /> },
+  { id: "MY_PAGE",         label: "My A9",              icon: <LayoutDashboard size={20} /> },
   { id: "APPROVAL",    label: "전자 결재",      icon: <CheckSquare size={20} /> },
   { id: "RESERVATION", label: "자원 예약",      icon: <MapPin size={20} /> },
   { id: "BOARD",       label: "사내 게시판",    icon: <MessageSquare size={20} /> },
@@ -192,10 +192,10 @@ const Header: React.FC<HeaderProps> = ({
         {/* 로고 */}
         <div
           className="flex items-center gap-3 group cursor-pointer"
-          onClick={() => onCategoryChange("MY_A9")}
+          onClick={() => onCategoryChange("MY_PAGE")}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && onCategoryChange("MY_A9")}
+          onKeyDown={(e) => e.key === "Enter" && onCategoryChange("MY_PAGE")}
         >
           <div className="w-10 h-10 bg-[#fafafa] rounded-md flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-slate-100">
             <span className="text-blue-600 text-xl font-black italic">A9</span>

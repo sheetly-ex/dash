@@ -48,7 +48,7 @@ const BoardHome: React.FC = () => {
             </div>
           </Widget>
 
-          <Widget title="A9 불편 사항 접수" color="rose">
+          <Widget title="불편 사항 접수" color="rose">
             <Card className="p-4 bg-rose-50 border-rose-100 shadow-none" noPadding hoverable={false}>
               <p className="text-[12px] font-bold text-rose-700 leading-relaxed mb-4">
                 시스템 이용 중 불편한 점이나 개선이 필요한 사항을 자유롭게 남겨주세요.

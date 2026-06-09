@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Users, Mail, Phone, X, ChevronUp } from 'lucide-react';
 
 const TEAM_MEMBERS = [
-  { name: '김팀장', rank: '팀장',  phone: '010-1234-5678', email: 'kim.tj@a9.com' },
-  { name: '이대리', rank: '대리',  phone: '010-2345-6789', email: 'lee.dr@a9.com' },
-  { name: '박주임', rank: '주임',  phone: '010-3456-7890', email: 'park.ji@a9.com' },
-  { name: '최사원', rank: '사원',  phone: '010-4567-8901', email: 'choi.sw@a9.com' },
-  { name: '정과장', rank: '과장',  phone: '010-5678-9012', email: 'jung.gj@a9.com' },
+  { name: '김팀장', rank: '팀장',  phone: '010-1234-5678', email: 'kim.tj@i-on.com' },
+  { name: '이대리', rank: '대리',  phone: '010-2345-6789', email: 'lee.dr@i-on.com' },
+  { name: '박주임', rank: '주임',  phone: '010-3456-7890', email: 'park.ji@i-on.com' },
+  { name: '최사원', rank: '사원',  phone: '010-4567-8901', email: 'choi.sw@i-on.com' },
+  { name: '정과장', rank: '과장',  phone: '010-5678-9012', email: 'jung.gj@i-on.com' },
 ];
 
 const FloatingTeamButton: React.FC = () => {

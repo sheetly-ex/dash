@@ -1,4 +1,4 @@
-export type MainCategory = 'MY_A9' | 'APPROVAL' | 'RESERVATION' | 'BOARD' | 'REQUEST' | 'CONTACT';
+export type MainCategory = 'MY_PAGE' | 'APPROVAL' | 'RESERVATION' | 'BOARD' | 'REQUEST' | 'CONTACT';
 
 export type SubView = 
   // MY_A9

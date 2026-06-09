@@ -27,7 +27,7 @@ import ApprovalList from './pages/ApprovalList';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<MainCategory>('MY_A9');
+  const [activeCategory, setActiveCategory] = useState<MainCategory>('MY_PAGE');
   const [currentView, setCurrentView] = useState<SubView>('DASHBOARD');
 
   if (!isLoggedIn) {
@@ -37,7 +37,7 @@ function App() {
   const handleCategoryChange = (cat: MainCategory) => {
     setActiveCategory(cat);
     // Reset to category's Home/Dashboard view
-    if (cat === 'MY_A9') setCurrentView('DASHBOARD');
+    if (cat === 'MY_PAGE') setCurrentView('DASHBOARD');
     else if (cat === 'APPROVAL') setCurrentView('APPROVAL_WRITE');
     else if (cat === 'RESERVATION') setCurrentView('RESERVATION_HOME');
     else if (cat === 'BOARD') setCurrentView('BOARD_HOME');
@@ -47,7 +47,7 @@ function App() {
 
 
   const renderMainContent = () => {
-    // MY_A9
+    // MY_PAGE
     if (currentView === 'DASHBOARD') return <Dashboard setCurrentView={setCurrentView} />;
     if (currentView === 'PROFILE') return <Profile />;
     if (currentView === 'CALENDAR') return <Calendar />;

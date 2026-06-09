@@ -19,7 +19,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import {
   GripVertical, CheckSquare, AlertTriangle,
-  Mail, MailOpen, ChevronRight, Clock, Users, Briefcase,
+  Mail, MailOpen, ChevronRight, Users, Briefcase,
   CalendarCheck, Plus, File, Folder, AlertCircle,
 } from 'lucide-react';
 import Widget from '../components/ui/Widget';
@@ -205,7 +205,7 @@ function ApprovalWidget({ handleProps, onMore, className }: WidgetProps) {
         <div className="border-t border-slate-50" />
         <div>
           <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center justify-between">
-            <span>결재 파이프라인</span><Briefcase size={11} className="text-slate-300" />
+            <span>결재 현황</span><Briefcase size={11} className="text-slate-300" />
           </div>
           <div className="space-y-1.5">
             {APPROVALS.map((a, idx) => (

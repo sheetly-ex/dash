@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Clock, Users, CheckCircle2, Info } from 'lucide-react';
+import { CheckCircle2, Info } from 'lucide-react';
 import Widget from '../components/ui/Widget';
 import Card from '../components/ui/Card';
 
@@ -114,12 +114,10 @@ const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
 
 // Generate a simple calendar for June 2026
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
-const june2026Start = 0; // June 1, 2026 is Monday (index 1)
 // June 1 2026 is actually a Monday
 const june2026FirstDay = 1; // Monday
 const june2026Days = 30;
 
-const unavailableDates = new Set([5, 12, 13, 19, 20, 26, 27]); // weekends
 const fullyBooked = new Set([7, 8, 15]);
 
 interface Props {

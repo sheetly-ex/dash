@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Bell, CheckCircle2, Info, Calendar, Mail } from 'lucide-react';
+import { Bell } from 'lucide-react';
 
 interface Notification {
   id: number;
@@ -15,7 +15,7 @@ interface NotificationModalProps {
   onClose: () => void;
 }
 
-const NotificationModal: React.FC<NotificationModalProps> = ({ notifications, onClose }) => {
+const NotificationModal: React.FC<NotificationModalProps> = ({ notifications }) => {
 
   return (
     <div className="absolute top-16 right-0 w-96 bg-[#fafafa] rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">

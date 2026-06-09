@@ -6,7 +6,7 @@ import {
 import Card from '../components/ui/Card';
 import Widget from '../components/ui/Widget';
 import Badge, { STATUS_VARIANT } from '../components/ui/Badge';
-import { MetaRow, MetaGrid } from '../components/ui/MetaRow';
+import { MetaGrid } from '../components/ui/MetaRow';
 import { currentUser, getApprovalLine } from '../data/user';
 import type { SubView } from '../types';
 

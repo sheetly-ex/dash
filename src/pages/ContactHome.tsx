@@ -1,5 +1,5 @@
 import React from 'react';
-import { Contact2, Search, Phone, Mail, ChevronRight, UserPlus, Globe, MoreHorizontal } from 'lucide-react';
+import { Contact2, Search, ChevronRight, UserPlus, Globe, MoreHorizontal } from 'lucide-react';
 import Widget from '../components/ui/Widget';
 import Card from '../components/ui/Card';
 

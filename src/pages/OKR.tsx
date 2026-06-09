@@ -4,7 +4,12 @@ import Widget from '../components/ui/Widget';
 import Card from '../components/ui/Card';
 import Badge, { STATUS_VARIANT } from '../components/ui/Badge';
 
-const objectives = [
+type KRStatus = '진행중' | '달성' | '지연';
+
+interface KeyResult { id: number; title: string; progress: number; status: KRStatus; }
+interface Objective { id: number; title: string; owner: string; progress: number; color: string; keyResults: KeyResult[]; }
+
+const objectives: Objective[] = [
   {
     id: 1,
     title: '고객 경험 품질 혁신',

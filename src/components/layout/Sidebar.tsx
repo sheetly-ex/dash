@@ -1,9 +1,9 @@
 import React from 'react';
 import { 
   LayoutDashboard, CheckSquare, Calendar, Users, 
-  MapPin, Clipboard, Heart, Bell, MessageSquare, 
+  MapPin, Heart, Bell, MessageSquare, 
   ShoppingCart, Contact2, Star, User2, Briefcase,
-  FileText, Mail, FileSearch, Settings2, Info, PieChart,
+  FileText, Mail,
   Map, ClipboardList, TrendingUp, PlaneTakeoff
 } from 'lucide-react';
 import NavItem from '../ui/NavItem';
@@ -14,10 +14,9 @@ interface SidebarProps {
   activeCategory: MainCategory;
   currentView: SubView;
   setCurrentView: (v: SubView) => void;
-  getCategoryTitle: (cat: MainCategory) => string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeCategory, currentView, setCurrentView, getCategoryTitle }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeCategory, currentView, setCurrentView }) => {
   const renderSidebarContent = () => {
     switch (activeCategory) {
       case 'MY_A9':
@@ -27,8 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeCategory, currentView, setCurre
               <NavItem icon={<LayoutDashboard size={18} />} label="Home" active={currentView === 'DASHBOARD'} onClick={() => setCurrentView('DASHBOARD')} />
               <NavItem icon={<User2 size={18} />} label="개인 정보" active={currentView === 'PROFILE'} onClick={() => setCurrentView('PROFILE')} />
               <NavItem icon={<Calendar size={18} />} label="회사 달력" active={currentView === 'CALENDAR'} onClick={() => setCurrentView('CALENDAR')} />
-              <NavItem icon={<PieChart size={18} />} label="연차 현황" active={currentView === 'VACATION'} onClick={() => setCurrentView('VACATION')} />
-              <NavItem icon={<PlaneTakeoff size={18} />} label="휴가 신청" active={currentView === 'VACATION_REQUEST'} onClick={() => setCurrentView('VACATION_REQUEST')} />
+              <NavItem icon={<PlaneTakeoff size={18} />} label="연차 / 휴가" active={currentView === 'VACATION'} onClick={() => setCurrentView('VACATION')} />
             </NavGroup>
             <NavGroup title="인적 네트워크">
               <NavItem icon={<Map size={18} />} label="전사 조직도" active={currentView === 'ORG_CHART'} onClick={() => setCurrentView('ORG_CHART')} />
@@ -90,13 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeCategory, currentView, setCurre
 
   return (
     <aside className="w-64 bg-[#fafafa] flex flex-col shrink-0 z-20 shadow-sm">
-      <div className="p-6">
-        <div className="bg-slate-50 rounded-lg p-4 border border-slate-100">
-          <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">현재 메뉴</h2>
-          <div className="text-sm font-black text-slate-800 truncate">{getCategoryTitle(activeCategory)}</div>
-        </div>
-      </div>
-      <nav className="flex-1 overflow-y-auto px-3 py-2 scrollbar-hide">
+      <nav className="flex-1 overflow-y-auto px-3 py-4 scrollbar-hide">
         {renderSidebarContent()}
       </nav>
     </aside>

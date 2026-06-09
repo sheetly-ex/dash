@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, MessageSquare, Bell, FileText, ChevronRight, MessageCircle, Info } from 'lucide-react';
+import { Bell, ChevronRight, MessageCircle } from 'lucide-react';
 import Widget from '../components/ui/Widget';
 import Card from '../components/ui/Card';
 

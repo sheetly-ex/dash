@@ -1,9 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Users, Clock, CheckCircle2, AlertCircle, ChevronRight, MapPin, Briefcase } from 'lucide-react';
+import { LayoutDashboard, Users, Clock, CheckCircle2, AlertCircle, MapPin, Briefcase } from 'lucide-react';
 import Widget from '../components/ui/Widget';
 import Card from '../components/ui/Card';
 import StatusCard from '../components/ui/StatusCard';
-import Badge, { STATUS_VARIANT } from '../components/ui/Badge';
+import Badge from '../components/ui/Badge';
+import type { BadgeVariant } from '../components/ui/Badge';
 
 const ReservationHome: React.FC = () => {
   const todayReservations = [
@@ -126,7 +127,7 @@ function UsageRow({ resource, user, time, status, isLast = false }: UsageRowProp
         <div className="text-[13px] font-black text-slate-700 flex items-center gap-2">
           <Clock size={14} className="text-slate-300" />{time}
         </div>
-        <Badge variant={USAGE_VARIANT[status] ?? 'slate'} size="sm">{status}</Badge>
+        <Badge variant={(USAGE_VARIANT[status] ?? 'slate') as BadgeVariant} size="sm">{status}</Badge>
       </div>
     </div>
   );

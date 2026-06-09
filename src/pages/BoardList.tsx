@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronRight, Pin, Paperclip } from 'lucide-react';
 import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
 import SearchInput from '../components/ui/SearchInput';
 import EmptyState from '../components/ui/EmptyState';
 import Badge from '../components/ui/Badge';

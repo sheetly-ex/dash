@@ -40,7 +40,7 @@ interface NavItemConfig {
 }
 
 const NAV_ITEMS_DEFAULT: NavItemConfig[] = [
-  { id: 'MY_PAGE', label: 'My A9', icon: <LayoutDashboard size={20} /> },
+  { id: 'MY_PAGE', label: '마이페이지', icon: <LayoutDashboard size={20} /> },
   { id: 'APPROVAL', label: '전자 결재', icon: <CheckSquare size={20} /> },
   { id: 'RESERVATION', label: '자원 예약', icon: <MapPin size={20} /> },
   { id: 'BOARD', label: '사내 게시판', icon: <MessageSquare size={20} /> },
@@ -73,6 +73,18 @@ interface SortableNavItemProps {
   onClick: () => void;
 }
 
+function GripIcon() {
+  return (
+    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" className="text-slate-300">
+      {[0, 4].map(x =>
+        [0, 4, 8].map(y => (
+          <circle key={`${x}-${y}`} cx={x + 1.5} cy={y + 3} r="1.2" fill="currentColor" />
+        ))
+      )}
+    </svg>
+  );
+}
+
 function SortableNavItem({ config, active, onClick }: SortableNavItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: config.id,
@@ -81,12 +93,25 @@ function SortableNavItem({ config, active, onClick }: SortableNavItemProps) {
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.4 : 1,
+    opacity: isDragging ? 0.35 : 1,
     zIndex: isDragging ? 50 : undefined,
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="touch-none">
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className="flex items-center group/drag h-full"
+    >
+      {/* 드래그 핸들 — 호버 시 나타남 */}
+      <div
+        {...listeners}
+        className="flex items-center justify-center w-4 h-full opacity-0 group-hover/drag:opacity-100 transition-opacity cursor-grab active:cursor-grabbing touch-none mr-0.5"
+        title="드래그해서 순서 변경"
+      >
+        <GripIcon />
+      </div>
       <TopNavItem icon={config.icon} label={config.label} active={active} onClick={onClick} />
     </div>
   );
@@ -101,10 +126,10 @@ const Header: React.FC<HeaderProps> = ({ activeCategory, onCategoryChange, onLog
   const profileRef = useRef<HTMLDivElement>(null);
   const unreadCount = NOTIFICATION_MOCKS.filter(n => !n.isRead).length;
 
-  // 드래그 센서: 300ms 꾹 누르거나 8px 이동 시 활성화
+  // 드래그 센서: 4px 이상 이동 시 활성화 (그립 핸들 전용)
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { delay: 250, tolerance: 8 },
+      activationConstraint: { distance: 4 },
     })
   );
 

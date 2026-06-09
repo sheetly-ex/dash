@@ -47,16 +47,21 @@ const ApprovalList: React.FC<Props> = ({ mode }) => {
     rejected: data.filter(d => d.status === '반려').length,
   };
 
-  return (
-    <div className="space-y-8">
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-6">
-        <StatCard label={mode === 'received' ? '처리 대기' : '진행 중'} value={counts.pending} color="rose" />
-        <StatCard label="승인 완료" value={counts.done} color="emerald" />
-        <StatCard label="반려" value={counts.rejected} color="slate" />
-      </div>
+  const pendingLabel = mode === 'received' ? '처리 대기' : '진행 중';
 
-      <Widget title={mode === 'received' ? '받은 결재함' : '보낸 결재함'} color="blue">
+  return (
+    <div className="space-y-4">
+      <Widget
+        title={mode === 'received' ? '받은 결재함' : '보낸 결재함'}
+        headerRight={
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] font-bold text-slate-400">{pendingLabel} <span className="font-black text-rose-500">{counts.pending}건</span></span>
+            <span className="text-slate-200">·</span>
+            <span className="text-[11px] font-bold text-slate-400">승인 완료 <span className="font-black text-emerald-500">{counts.done}건</span></span>
+            <span className="text-slate-200">·</span>
+            <span className="text-[11px] font-bold text-slate-400">반려 <span className="font-black text-slate-500">{counts.rejected}건</span></span>
+          </div>
+        }>
         {/* Search & Filter */}
         <div className="flex items-center gap-3 mb-6 mt-2">
           <SearchInput value={search} onChange={setSearch} placeholder="제목 또는 기안자 검색" size="sm" className="flex-1" />
@@ -100,16 +105,5 @@ const ApprovalList: React.FC<Props> = ({ mode }) => {
   );
 };
 
-interface StatCardProps { label: string; value: number; color: 'rose' | 'emerald' | 'slate'; }
-function StatCard({ label, value, color }: StatCardProps) {
-  const colorMap: Record<StatCardProps['color'], string> = { rose: 'border-rose-100 text-rose-500', emerald: 'border-emerald-100 text-emerald-500', slate: 'border-slate-100 text-slate-400' };
-  const [border, text] = colorMap[color].split(' ');
-  return (
-    <Card noPadding className={`p-5 border shadow-none ${border}`}>
-      <div className={`text-3xl font-black ${text}`}>{value}건</div>
-      <div className="text-[11px] font-black text-slate-500 uppercase tracking-wider mt-1">{label}</div>
-    </Card>
-  );
-}
 
 export default ApprovalList;

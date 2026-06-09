@@ -1,161 +1,138 @@
-# A9 그룹웨어 - React 프로젝트 폴더 구조
+#그룹웨어 프로토타입
+
+기업 내부 업무 환경을 위한 그룹웨어 dash 프로토타입입니다.  
+전자결재, 자원예약, 사내 게시판, 구매/발급 요청, 연락처 등 주요 사내 업무 기능을 단일 SPA로 구현했습니다.
+
+---
+
+## 주요 기능
+
+###
+
+| 기능           | 설명                                                                                                                       |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 대시보드       | 업무 일정·메일·공지·결재 현황·Google Drive를 한눈에 확인. 드래그 앤 드롭으로 위젯 순서 변경 가능, `localStorage` 영속 저장 |
+| 팀원 빠른 연락 | 대시보드 전용 플로팅 버튼. 팀원 목록에서 전화번호 복사 및 Gmail 작성 화면 바로 이동                                        |
+| 캘린더         | 월별 회사 일정 관리                                                                                                        |
+| 휴가 관리      | 잔여 휴가 현황 조회 및 휴가 신청                                                                                           |
+| 조직도         | 부서·직급 기반 인터랙티브 조직도                                                                                           |
+| 업무 명세      | 역할별 담당 업무 정의                                                                                                      |
+| OKR            | 목표 및 핵심 결과 관리                                                                                                     |
+| 프로필         | 내 정보 조회 및 수정                                                                                                       |
+
+### 전자 결재
+
+- 결재 기안 작성
+- 받은 결재함 / 보낸 결재함 (상태 필터 드롭다운, 키워드 검색)
+- 결재선 자동 배정 (직급·금액 기준) + 추가 결재자 수동 지정
+
+### 자원 예약
+
+- 헬스케어·회의실·법인 차량·속초 휴양소·카페테리아·옥상 캠핑장 예약
+- 예약 상세 조회
+
+### 사내 게시판
+
+- I-ON Collective / I-ON 게시판 / 계열사 게시판
+- 게시글 목록·태그 필터·검색
+
+### 구매/발급 요청
+
+- 구매 신청서 작성 (품목 추가·삭제, 총액 자동 계산, 결재선 자동 구성)
+- 발급 신청서 작성
+- 신청 상세 조회 (결재 흐름·처리 이력)
+
+### 연락처
+
+- 재직자 / 퇴직자 / 거래처 연락처 검색 및 조회
+
+---
 
 ## 기술 스택
-- **Frontend**: React 18 + TypeScript
-- **상태관리**: Zustand (전역) + React Query (서버 상태)
-- **스타일링**: Tailwind CSS + shadcn/ui
-- **라우팅**: React Router v6
-- **빌드**: Vite
+
+| 분류           | 라이브러리 / 도구                 |
+| -------------- | --------------------------------- |
+| 프레임워크     | React 19                          |
+| 언어           | TypeScript 6                      |
+| 스타일         | Tailwind CSS v4                   |
+| 아이콘         | Lucide React                      |
+| 드래그 앤 드롭 | @dnd-kit/core · @dnd-kit/sortable |
+| 빌드 도구      | Vite 8                            |
+| 패키지 매니저  | pnpm                              |
 
 ---
 
-## 폴더 구조
+## 프로젝트 구조
 
 ```
-a9-groupware/
-├── public/
-│
-├── src/
-│   ├── assets/                         # 정적 리소스
-│   │   ├── images/
-│   │   ├── icons/
-│   │   └── fonts/
-│   │
-│   ├── components/                     # 공통 컴포넌트
-│   │   ├── ui/                         # 기본 UI 컴포넌트 (Button, Input, Modal 등)
-│   │   ├── layout/                     # 레이아웃 컴포넌트
-│   │   │   ├── Sidebar/                # 사이드바 (메뉴 트리)
-│   │   │   ├── Header/                 # 상단 헤더
-│   │   │   ├── Footer/
-│   │   │   └── PageLayout/             # 페이지 공통 래퍼
-│   │   ├── charts/                     # 차트 공통 컴포넌트
-│   │   ├── tables/                     # 테이블 공통 컴포넌트
-│   │   └── forms/                      # 폼 공통 컴포넌트
-│   │
-│   ├── pages/                          # 페이지 단위 컴포넌트 (라우트 매핑)
-│   │   ├── Auth/                       # 로그인
-│   │   ├── Home/                       # 홈 대시보드
-│   │   ├── MyA9/                       # My A9 (개인정보, 연차, 조직도 등)
-│   │   ├── Approval/                   # 전자결재
-│   │   ├── Board/                      # 사내게시판
-│   │   ├── Survey/                     # 설문조사
-│   │   ├── Reservation/                # 자원예약
-│   │   ├── HRM/                        # 인적자원관리
-│   │   ├── Finance/                    # 자금관리
-│   │   ├── Sales/                      # 영업활동관리
-│   │   ├── Transaction/                # 거래내역
-│   │   ├── Equipment/                  # 장비관리
-│   │   ├── Software/                   # S/W 관리
-│   │   ├── RnD/                        # R&D 과제관리
-│   │   ├── AccessInfo/                 # 공용접속정보
-│   │   ├── CorporateCard/              # 법인카드
-│   │   ├── DesignatedDriver/           # 법인대리운전
-│   │   ├── IP/                         # 지적재산권
-│   │   ├── Shareholders/               # 주주명부
-│   │   ├── OfficialDoc/                # 공문서관리
-│   │   ├── Purchase/                   # 구매/발급요청
-│   │   ├── Contacts/                   # 연락처
-│   │   ├── Attendance/                 # 근태관리
-│   │   ├── Vision/                     # 비전&목표
-│   │   ├── Meeting/                    # 회의록
-│   │   ├── ProjectPL/                  # 프로젝트손익관리
-│   │   ├── Financial/                  # 재무제표
-│   │   ├── CRM/                        # CRM 활동관리
-│   │   ├── IoT/                        # IoT
-│   │   └── Settings/                   # 시스템 설정
-│   │
-│   ├── features/                       # 도메인별 비즈니스 로직
-│   │   ├── auth/
-│   │   │   ├── components/             # 해당 도메인 전용 컴포넌트
-│   │   │   ├── hooks/                  # 도메인 전용 커스텀 훅
-│   │   │   ├── api/                    # API 호출 함수
-│   │   │   ├── store/                  # Zustand 스토어
-│   │   │   └── types/                  # 타입 정의
-│   │   ├── approval/
-│   │   │   ├── components/
-│   │   │   ├── hooks/
-│   │   │   ├── api/
-│   │   │   ├── store/
-│   │   │   └── types/
-│   │   ├── hrm/
-│   │   ├── finance/
-│   │   ├── sales/
-│   │   └── ...                         # 나머지 도메인 동일 구조
-│   │
-│   ├── hooks/                          # 전역 공통 커스텀 훅
-│   │   ├── useAuth.ts
-│   │   ├── usePermission.ts
-│   │   ├── usePagination.ts
-│   │   └── useModal.ts
-│   │
-│   ├── api/                            # API 클라이언트 공통 설정
-│   │   ├── client.ts                   # axios 인스턴스, 인터셉터
-│   │   └── endpoints.ts                # API URL 상수
-│   │
-│   ├── store/                          # 전역 Zustand 스토어
-│   │   ├── authStore.ts
-│   │   ├── uiStore.ts                  # 사이드바 열림/닫힘 등 UI 상태
-│   │   └── notificationStore.ts
-│   │
-│   ├── router/                         # 라우팅 설정
-│   │   ├── index.tsx                   # 라우트 정의
-│   │   ├── PrivateRoute.tsx            # 인증 가드
-│   │   └── PermissionRoute.tsx         # 권한 가드
-│   │
-│   ├── types/                          # 전역 공통 타입
-│   │   ├── common.ts
-│   │   ├── user.ts
-│   │   └── api.ts
-│   │
-│   ├── utils/                          # 유틸리티 함수
-│   │   ├── date.ts
-│   │   ├── format.ts                   # 숫자/금액 포맷
-│   │   ├── excel.ts                    # 엑셀 다운로드
-│   │   └── validator.ts
-│   │
-│   ├── constants/                      # 상수 정의
-│   │   ├── menu.ts                     # 사이드바 메뉴 구조
-│   │   ├── permissions.ts              # 권한 코드
-│   │   └── codes.ts                    # 공통 코드 (직급, 직책 등)
-│   │
-│   ├── styles/                         # 전역 스타일
-│   │   ├── globals.css
-│   │   └── tailwind.css
-│   │
-│   └── main.tsx                        # 앱 진입점
-│
-├── .env
-├── .env.development
-├── .env.production
-├── index.html
-├── vite.config.ts
-├── tsconfig.json
-├── tailwind.config.ts
-└── package.json
+src/
+├── components/
+│   ├── layout/
+│   │   ├── Header.tsx          # 상단 GNB (카테고리 탭, 알림, 사용자 메뉴)
+│   │   └── Sidebar.tsx         # 좌측 서브 내비게이션
+│   ├── ui/                     # 공용 UI 컴포넌트
+│   │   ├── Badge.tsx
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Callout.tsx
+│   │   ├── EmptyState.tsx
+│   │   ├── FloatingTeamButton.tsx  # 대시보드 전용 팀원 빠른 연락 버튼
+│   │   ├── FormField.tsx
+│   │   ├── MetaRow.tsx
+│   │   ├── SearchInput.tsx
+│   │   ├── StatusCard.tsx
+│   │   └── Widget.tsx          # 대시보드 위젯 래퍼
+│   ├── dashboard/
+│   └── org-chart/
+├── pages/                      # 뷰 단위 페이지 컴포넌트
+├── data/
+│   └── user.ts                 # 현재 로그인 사용자 mock + 결재선 자동 생성 로직
+├── constants/
+│   └── mockData.ts             # 전역 mock 데이터
+├── types/
+│   └── index.ts                # MainCategory / SubView 타입 정의
+└── App.tsx                     # 라우팅 및 레이아웃 루트
 ```
 
 ---
 
-## 핵심 설계 원칙
+## 시작하기
 
-### 1. `pages/` vs `features/` 분리
-| 폴더 | 역할 |
-|------|------|
-| `pages/` | 라우트와 1:1 매핑되는 페이지 진입점. 레이아웃 조합만 담당 |
-| `features/` | 도메인별 비즈니스 로직, API, 상태, 전용 컴포넌트 |
+### 사전 요구 사항
 
-### 2. 컴포넌트 계층
+- Node.js 18+
+- pnpm
+
+### 설치 및 실행
+
+```bash
+# 의존성 설치
+pnpm install
+
+# 개발 서버 실행
+pnpm dev
 ```
-pages (라우트 진입점)
-  └── features/[domain]/components (도메인 전용)
-        └── components/ui, tables, charts (공통 UI)
+
+브라우저에서 `http://localhost:5173` 접속 후 로그인 화면에서 아무 값이나 입력하면 진입할 수 있습니다.
+
+### 빌드
+
+```bash
+pnpm build
 ```
 
-### 3. 권한 처리
-- `router/PermissionRoute.tsx`에서 메뉴 접근 권한 제어
-- `constants/permissions.ts`에서 권한 코드 중앙 관리
-- HQ 인사/총무/회계 담당자의 자회사 접근은 `store/authStore.ts`에서 관리
+---
 
-### 4. 환경 분리
-- `.env.development` : 개발 API 서버
-- `.env.production` : 운영 API 서버1
+## 설계 원칙
+
+- **컴포넌트 재사용**: `Widget`, `Card`, `Badge`, `StatusCard` 등 공용 UI 원자 컴포넌트 기반으로 일관된 디자인 유지
+- **반응형 레이아웃**: Tailwind `sm:` / `md:` / `lg:` 브레이크포인트 전략으로 다양한 해상도 대응
+- **단방향 상태 흐름**: `App.tsx`의 `currentView` 상태를 중심으로 한 단순 라우팅 구조
+- **Mock 데이터 분리**: `src/data/`, `src/constants/`에 데이터 로직을 분리해 실제 API 연동 시 최소 변경으로 대응 가능
+
+---
+
+## 현재 상태
+
+> 이 프로젝트는 **UI/UX 프로토타입**으로, 모든 데이터는 mock 데이터를 사용합니다.  
+> 실제 서버 연동 및 인증 로직은 포함되어 있지 않습니다.

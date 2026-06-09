@@ -46,7 +46,7 @@ interface NavItemConfig {
 }
 
 const NAV_ITEMS_DEFAULT: NavItemConfig[] = [
-  { id: "MY_A9",       label: "My A9",         icon: <LayoutDashboard size={20} /> },
+  { id: "MY_A9",       label: "마이 페이지",         icon: <LayoutDashboard size={20} /> },
   { id: "APPROVAL",    label: "전자 결재",      icon: <CheckSquare size={20} /> },
   { id: "RESERVATION", label: "자원 예약",      icon: <MapPin size={20} /> },
   { id: "BOARD",       label: "사내 게시판",    icon: <MessageSquare size={20} /> },

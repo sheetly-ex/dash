@@ -100,8 +100,9 @@ const ApprovalList: React.FC<Props> = ({ mode }) => {
   );
 };
 
-function StatCard({ label, value, color }: any) {
-  const colorMap: any = { rose: 'border-rose-100 text-rose-500', emerald: 'border-emerald-100 text-emerald-500', slate: 'border-slate-100 text-slate-400' };
+interface StatCardProps { label: string; value: number; color: 'rose' | 'emerald' | 'slate'; }
+function StatCard({ label, value, color }: StatCardProps) {
+  const colorMap: Record<StatCardProps['color'], string> = { rose: 'border-rose-100 text-rose-500', emerald: 'border-emerald-100 text-emerald-500', slate: 'border-slate-100 text-slate-400' };
   const [border, text] = colorMap[color].split(' ');
   return (
     <Card noPadding className={`p-5 border shadow-none ${border}`}>

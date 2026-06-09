@@ -94,7 +94,8 @@ const Vacation: React.FC = () => {
 };
 
 
-function HistoryRow({ type, date, days, status }: any) {
+interface HistoryRowProps { type: string; date: string; days: string; status: string; }
+function HistoryRow({ type, date, days, status }: HistoryRowProps) {
   return (
     <tr className="group hover:bg-slate-50/50 transition-colors">
       <td className="py-5">

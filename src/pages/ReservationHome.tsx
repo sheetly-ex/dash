@@ -81,7 +81,8 @@ const ReservationHome: React.FC = () => {
 };
 
 
-function CategoryItem({ icon, label, count }: any) {
+interface CategoryItemProps { icon: React.ReactNode; label: string; count: string; }
+function CategoryItem({ icon, label, count }: CategoryItemProps) {
   return (
     <Card noPadding className="flex flex-col items-center p-6 bg-slate-50 border border-slate-100/50 rounded-xl hover:bg-[#fafafa] hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-100 transition-all cursor-pointer group">
       <div className="w-14 h-14 bg-[#fafafa] rounded-lg flex items-center justify-center text-slate-400 group-hover:text-blue-600 shadow-sm mb-4 transition-colors">
@@ -93,7 +94,8 @@ function CategoryItem({ icon, label, count }: any) {
   );
 }
 
-function NoticeItem({ tag, title, date, important = false }: any) {
+interface NoticeItemProps { tag: string; title: string; date: string; important?: boolean; }
+function NoticeItem({ tag, title, date, important = false }: NoticeItemProps) {
   return (
     <div className="flex items-center gap-4 py-3 border-b border-slate-50 last:border-0 group cursor-pointer">
       <span className={`px-2 py-1 rounded text-[9px] font-black uppercase tracking-widest ${important ? 'bg-rose-50 text-rose-600' : 'bg-slate-100 text-slate-500'}`}>
@@ -107,9 +109,10 @@ function NoticeItem({ tag, title, date, important = false }: any) {
   );
 }
 
-const USAGE_VARIANT: Record<string, any> = { '사용중': 'blue', '예약됨': 'emerald', '완료': 'slate' };
+const USAGE_VARIANT: Record<string, string> = { '사용중': 'blue', '예약됨': 'emerald', '완료': 'slate' };
 
-function UsageRow({ resource, user, time, status, isLast = false }: any) {
+interface UsageRowProps { resource: string; user: string; time: string; status: string; isLast?: boolean; }
+function UsageRow({ resource, user, time, status, isLast = false }: UsageRowProps) {
   return (
     <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 ${isLast ? '' : 'border-b border-slate-50 pb-6'}`}>
       <div className="flex items-center gap-4">

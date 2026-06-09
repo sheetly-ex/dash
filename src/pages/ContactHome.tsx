@@ -127,7 +127,8 @@ const ContactHome: React.FC = () => {
   );
 };
 
-function ContactRow({ name, pos, dept, email, phone }: any) {
+interface ContactRowProps { name: string; pos: string; dept: string; email: string; phone: string; }
+function ContactRow({ name, pos, dept, email, phone }: ContactRowProps) {
   return (
     <tr className="group hover:bg-blue-50/30 transition-colors cursor-pointer">
       <td className="py-4 px-6">
@@ -155,7 +156,8 @@ function ContactRow({ name, pos, dept, email, phone }: any) {
   );
 }
 
-function FavoriteItem({ name, dept }: any) {
+interface FavoriteItemProps { name: string; dept: string; }
+function FavoriteItem({ name, dept }: FavoriteItemProps) {
   return (
     <div className="flex items-center justify-between group cursor-pointer">
       <div className="flex items-center gap-3">
@@ -172,7 +174,8 @@ function FavoriteItem({ name, dept }: any) {
   );
 }
 
-function GroupItem({ label, count }: any) {
+interface GroupItemProps { label: string; count: string | number; }
+function GroupItem({ label, count }: GroupItemProps) {
   return (
     <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-100/50 rounded-lg hover:bg-[#fafafa] hover:border-indigo-100 hover:shadow-lg hover:shadow-indigo-500/5 transition-all cursor-pointer group">
       <span className="text-[13px] font-black text-slate-700 group-hover:text-indigo-600 transition-colors">{label}</span>

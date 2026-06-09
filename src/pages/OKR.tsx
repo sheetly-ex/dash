@@ -135,8 +135,9 @@ const OKR: React.FC = () => {
   );
 };
 
-function SummaryCard({ label, value, sub, color }: any) {
-  const colorMap: any = { blue: 'border-blue-100 text-blue-600', indigo: 'border-indigo-100 text-indigo-600', emerald: 'border-emerald-100 text-emerald-600', slate: 'border-slate-100 text-slate-500' };
+interface SummaryCardProps { label: string; value: string | number; sub: string; color: 'blue' | 'indigo' | 'emerald' | 'slate'; }
+function SummaryCard({ label, value, sub, color }: SummaryCardProps) {
+  const colorMap: Record<SummaryCardProps['color'], string> = { blue: 'border-blue-100 text-blue-600', indigo: 'border-indigo-100 text-indigo-600', emerald: 'border-emerald-100 text-emerald-600', slate: 'border-slate-100 text-slate-500' };
   const [border, text] = colorMap[color].split(' ');
   return (
     <Card className={`p-5 border ${border} shadow-none hover:shadow-md transition-all`} noPadding>
@@ -147,8 +148,9 @@ function SummaryCard({ label, value, sub, color }: any) {
   );
 }
 
-function KRItem({ index, title, progress, status }: any) {
-  const iconMap: any = { '달성': <CheckCircle2 size={14} className="text-emerald-500" />, '진행중': <Clock size={14} className="text-blue-500" />, '지연': <Circle size={14} className="text-rose-400" /> };
+interface KRItemProps { index: number; title: string; progress: number; status: '달성' | '진행중' | '지연'; }
+function KRItem({ index, title, progress, status }: KRItemProps) {
+  const iconMap: Record<KRItemProps['status'], React.ReactNode> = { '달성': <CheckCircle2 size={14} className="text-emerald-500" />, '진행중': <Clock size={14} className="text-blue-500" />, '지연': <Circle size={14} className="text-rose-400" /> };
   return (
     <div className="p-3 bg-[#fafafa] border border-slate-100 rounded hover:border-slate-200 transition-all group">
       <div className="flex items-start justify-between gap-3 mb-2">
@@ -170,8 +172,9 @@ function KRItem({ index, title, progress, status }: any) {
   );
 }
 
-function LegendItem({ color, label, count }: any) {
-  const colors: any = {
+interface LegendItemProps { color: 'emerald' | 'blue' | 'rose'; label: string; count: number; }
+function LegendItem({ color, label, count }: LegendItemProps) {
+  const colors: Record<LegendItemProps['color'], string> = {
     emerald: 'bg-emerald-500',
     blue: 'bg-blue-500',
     rose: 'bg-rose-400',
@@ -187,7 +190,8 @@ function LegendItem({ color, label, count }: any) {
   );
 }
 
-function UpdateItem({ date, text }: any) {
+interface UpdateItemProps { date: string; text: string; }
+function UpdateItem({ date, text }: UpdateItemProps) {
   return (
     <div className="flex items-start gap-3 py-2 border-b border-slate-50 last:border-0">
       <span className="text-[10px] font-black text-slate-300 shrink-0 mt-0.5">{date}</span>

@@ -95,7 +95,7 @@ const Profile: React.FC = () => {
   );
 };
 
-function InfoItem({ label, value }: any) {
+function InfoItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
       <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{label}</div>
@@ -104,7 +104,8 @@ function InfoItem({ label, value }: any) {
   );
 }
 
-function TimelineItem({ title, period, desc, isCurrent = false }: any) {
+interface TimelineItemProps { title: string; period: string; desc: string; isCurrent?: boolean; }
+function TimelineItem({ title, period, desc, isCurrent = false }: TimelineItemProps) {
   return (
     <div className="flex gap-4 relative">
       <div className="flex flex-col items-center">
@@ -122,7 +123,7 @@ function TimelineItem({ title, period, desc, isCurrent = false }: any) {
   );
 }
 
-function CertItem({ title, agency }: any) {
+function CertItem({ title, agency }: { title: string; agency: string }) {
   return (
     <Card noPadding className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-lg border border-slate-100/50 hover:bg-[#fafafa] transition-all group">
       <div className="w-8 h-8 rounded bg-[#fafafa] flex items-center justify-center text-slate-400 shadow-sm group-hover:text-emerald-500 transition-colors">

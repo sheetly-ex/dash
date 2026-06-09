@@ -64,8 +64,9 @@ const BoardHome: React.FC = () => {
   );
 };
 
-function BoardCard({ title, desc, icon, color }: any) {
-  const borderColors: any = {
+interface BoardCardProps { title: string; desc: string; icon: React.ReactNode; color: 'rose' | 'blue'; }
+function BoardCard({ title, desc, icon, color }: BoardCardProps) {
+  const borderColors: Record<BoardCardProps['color'], string> = {
     rose: 'border-rose-100 hover:border-rose-300',
     blue: 'border-blue-100 hover:border-blue-300'
   };
@@ -85,7 +86,8 @@ function BoardCard({ title, desc, icon, color }: any) {
   );
 }
 
-function PostItem({ category, title, date, author, isNew = false }: any) {
+interface PostItemProps { category: string; title: string; date: string; author: string; isNew?: boolean; }
+function PostItem({ category, title, date, author, isNew = false }: PostItemProps) {
   return (
     <div className="flex items-center gap-4 py-4 px-2 border-b border-slate-50 last:border-0 hover:bg-slate-50/50 rounded-md transition-colors cursor-pointer group">
       <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest w-20 shrink-0">{category}</span>
@@ -105,7 +107,7 @@ function PostItem({ category, title, date, author, isNew = false }: any) {
   );
 }
 
-function ShortcutItem({ label, count }: any) {
+function ShortcutItem({ label, count }: { label: string; count: string | number }) {
   return (
     <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-100/50 rounded-lg hover:bg-[#fafafa] hover:border-blue-100 hover:shadow-lg hover:shadow-blue-500/5 transition-all cursor-pointer group">
       <span className="text-[13px] font-black text-slate-700 group-hover:text-blue-600 transition-colors">{label}</span>

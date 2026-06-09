@@ -104,7 +104,8 @@ const RequestHome: React.FC<{ setCurrentView: (v: SubView) => void }> = ({ setCu
 };
 
 
-function ApplicationRow({ type, item, date, status, onClick }: any) {
+interface ApplicationRowProps { type: string; item: string; date: string; status: string; onClick?: () => void; }
+function ApplicationRow({ type, item, date, status, onClick }: ApplicationRowProps) {
   return (
     <Card className="flex items-center justify-between p-4 bg-[#fafafa] border border-slate-50 rounded-lg hover:border-slate-200 hover:shadow-sm transition-all group cursor-pointer" noPadding onClick={onClick}>
       <div className="flex items-center gap-4">
@@ -122,8 +123,9 @@ function ApplicationRow({ type, item, date, status, onClick }: any) {
   );
 }
 
-function ActionCard({ title, desc, icon, btnLabel, color, onClick }: any) {
-  const btnColors: any = {
+interface ActionCardProps { title: string; desc: string; icon: React.ReactNode; btnLabel: string; color: 'blue' | 'emerald'; onClick?: () => void; }
+function ActionCard({ title, desc, icon, btnLabel, color, onClick }: ActionCardProps) {
+  const btnColors: Record<ActionCardProps['color'], string> = {
     blue: 'bg-blue-600 hover:bg-blue-700 shadow-blue-500/20',
     emerald: 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/20'
   };
@@ -141,7 +143,7 @@ function ActionCard({ title, desc, icon, btnLabel, color, onClick }: any) {
   );
 }
 
-function FAQItem({ question }: any) {
+function FAQItem({ question }: { question: string }) {
   return (
     <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-100/50 rounded-lg hover:bg-[#fafafa] hover:shadow-sm transition-all cursor-pointer group">
       <span className="text-[12px] font-bold text-slate-600 group-hover:text-blue-600">{question}</span>

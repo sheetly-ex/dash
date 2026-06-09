@@ -74,10 +74,10 @@ function SortableItem({ id, children }: SortableItemProps) {
   );
 }
 
-function DragHandle(props: React.HTMLAttributes<HTMLButtonElement>) {
+function DragHandle(props: React.HTMLAttributes<HTMLElement>) {
   return (
     <button
-      {...(props as any)}
+      {...props}
       className="p-1.5 rounded text-slate-300 hover:text-slate-500 hover:bg-slate-100 transition-all cursor-grab active:cursor-grabbing touch-none border-none bg-transparent"
       title="드래그하여 이동"
     >
@@ -89,7 +89,7 @@ function DragHandle(props: React.HTMLAttributes<HTMLButtonElement>) {
 // ── 주요 업무 일정 ──────────────────────────────────────────────
 function ScheduleWidget({ handleProps, onMore, className }: WidgetProps) {
   return (
-    <Widget title="주요 업무 일정" headerExtra={<DragHandle {...(handleProps as any)} />} onMoreClick={onMore} className={className}>
+    <Widget title="주요 업무 일정" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
       <div className="flex flex-col gap-4 h-full">
         <div className="flex-1 space-y-3 overflow-hidden">
           {[
@@ -129,10 +129,10 @@ function ScheduleWidget({ handleProps, onMore, className }: WidgetProps) {
 // ── 최근 메일 ───────────────────────────────────────────────────
 function MailWidget({ handleProps, onMore, className }: WidgetProps) {
   return (
-    <Widget title="최근 메일 수신함" headerExtra={<DragHandle {...(handleProps as any)} />} onMoreClick={onMore} className={className}>
+    <Widget title="최근 메일 수신함" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
       <div className="flex flex-col h-full">
         <div className="flex-1 overflow-hidden space-y-0.5">
-          {MAILS.slice(0, 4).map((mail: any, idx: number) => (
+          {MAILS.slice(0, 4).map((mail, idx) => (
             <div key={idx} className="flex items-center gap-3 py-2.5 border-b border-slate-50 last:border-0 hover:bg-slate-50/50 -mx-2 px-2 rounded-md transition-colors cursor-pointer group">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${mail.isNew ? 'bg-blue-50' : 'bg-slate-50'}`}>
                 {mail.isNew ? <Mail size={13} className="text-blue-500" /> : <MailOpen size={13} className="text-slate-400" />}
@@ -167,9 +167,9 @@ const NOTICE_TAG_COLORS: Record<string, string> = {
 
 function NoticeWidget({ handleProps, onMore, className }: WidgetProps) {
   return (
-    <Widget title="전사 공지사항" headerExtra={<DragHandle {...(handleProps as any)} />} onMoreClick={onMore} className={className}>
+    <Widget title="전사 공지사항" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
       <div className="space-y-0.5 overflow-hidden h-full">
-        {NOTICES.map((notice: any, idx: number) => (
+        {NOTICES.map((notice, idx) => (
           <div key={idx} className="flex items-center gap-3 py-2.5 border-b border-slate-50 last:border-0 hover:bg-slate-50/50 -mx-2 px-2 rounded-md transition-colors cursor-pointer group">
             <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest shrink-0 ${NOTICE_TAG_COLORS[notice.category] ?? 'bg-slate-50 text-slate-500'}`}>
               {notice.category}
@@ -186,7 +186,7 @@ function NoticeWidget({ handleProps, onMore, className }: WidgetProps) {
 // ── 결재 및 예약 현황 ───────────────────────────────────────────
 function ApprovalWidget({ handleProps, onMore, className }: WidgetProps) {
   return (
-    <Widget title="결재 및 예약 현황" headerExtra={<DragHandle {...(handleProps as any)} />} onMoreClick={onMore} className={className}>
+    <Widget title="결재 및 예약 현황" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
       <div className="flex flex-col gap-3 h-full overflow-hidden">
         <div>
           <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center justify-between">
@@ -208,7 +208,7 @@ function ApprovalWidget({ handleProps, onMore, className }: WidgetProps) {
             <span>결재 파이프라인</span><Briefcase size={11} className="text-slate-300" />
           </div>
           <div className="space-y-1.5">
-            {APPROVALS.map((a: any, idx: number) => (
+            {APPROVALS.map((a, idx) => (
               <div key={idx} className="flex items-center gap-2 cursor-pointer group">
                 <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${a.urgent ? 'bg-rose-400' : 'bg-slate-200'}`} />
                 <span className="text-[12px] font-bold text-slate-700 group-hover:text-blue-600 transition-colors flex-1">{a.label}</span>
@@ -257,7 +257,7 @@ const FILE_ICON_COLOR: Record<string, string> = {
 
 function DriveWidget({ handleProps, onMore, className }: WidgetProps) {
   return (
-    <Widget title="Google Drive" headerExtra={<DragHandle {...(handleProps as any)} />} onMoreClick={onMore} className={className}>
+    <Widget title="Google Drive" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
       <div className="space-y-0.5 overflow-y-auto h-full">
         {DRIVE_FILES.map((f, i) => (
           <div
@@ -283,7 +283,7 @@ function DriveWidget({ handleProps, onMore, className }: WidgetProps) {
 // ── 빈 섹션 ─────────────────────────────────────────────────────
 function EmptyWidget({ handleProps, className }: WidgetProps) {
   return (
-    <Widget title="빈 섹션" headerExtra={<DragHandle {...(handleProps as any)} />} headerRight={<span />} className={className}>
+    <Widget title="빈 섹션" headerExtra={<DragHandle {...handleProps} />} headerRight={<span />} className={className}>
       <div className="flex flex-col items-center justify-center h-full text-center">
         <div className="w-14 h-14 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center mb-3">
           <Plus size={22} className="text-slate-300" />

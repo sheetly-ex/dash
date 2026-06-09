@@ -1,75 +1,132 @@
-# React + TypeScript + Vite
+# A9 — 사내 그룹웨어 프로토타입
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+기업 내부 업무 환경을 위한 인트라넷 그룹웨어 프론트엔드 프로토타입입니다.  
+전자결재, 자원예약, 사내 게시판, 구매/발급 요청, 연락처 등 주요 사내 업무 기능을 단일 SPA로 구현했습니다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 주요 기능
 
-## React Compiler
+### My A9
+| 기능 | 설명 |
+|------|------|
+| 대시보드 | 업무 일정·메일·공지·결재 현황·Google Drive를 한눈에 확인. 드래그 앤 드롭으로 위젯 순서 변경 가능, `localStorage` 영속 저장 |
+| 팀원 빠른 연락 | 대시보드 전용 플로팅 버튼. 팀원 목록에서 전화번호 복사 및 Gmail 작성 화면 바로 이동 |
+| 캘린더 | 월별 회사 일정 관리 |
+| 휴가 관리 | 잔여 휴가 현황 조회 및 휴가 신청 |
+| 조직도 | 부서·직급 기반 인터랙티브 조직도 |
+| 업무 명세 | 역할별 담당 업무 정의 |
+| OKR | 목표 및 핵심 결과 관리 |
+| 프로필 | 내 정보 조회 및 수정 |
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### 전자 결재
+- 결재 기안 작성
+- 받은 결재함 / 보낸 결재함 (상태 필터 드롭다운, 키워드 검색)
+- 결재선 자동 배정 (직급·금액 기준) + 추가 결재자 수동 지정
 
-Note: This will impact Vite dev & build performances.
+### 자원 예약
+- 헬스케어·회의실·법인 차량·속초 휴양소·카페테리아·옥상 캠핑장 예약
+- 예약 상세 조회
 
-## Expanding the ESLint configuration
+### 사내 게시판
+- I-ON Collective / I-ON 게시판 / 계열사 게시판
+- 게시글 목록·태그 필터·검색
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 구매/발급 요청
+- 구매 신청서 작성 (품목 추가·삭제, 총액 자동 계산, 결재선 자동 구성)
+- 발급 신청서 작성
+- 신청 상세 조회 (결재 흐름·처리 이력)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 연락처
+- 재직자 / 퇴직자 / 거래처 연락처 검색 및 조회
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 기술 스택
+
+| 분류 | 라이브러리 / 도구 |
+|------|------------------|
+| 프레임워크 | React 19 |
+| 언어 | TypeScript 6 |
+| 스타일 | Tailwind CSS v4 |
+| 아이콘 | Lucide React |
+| 드래그 앤 드롭 | @dnd-kit/core · @dnd-kit/sortable |
+| 빌드 도구 | Vite 8 |
+| 패키지 매니저 | pnpm |
+
+---
+
+## 프로젝트 구조
+
+```
+src/
+├── components/
+│   ├── layout/
+│   │   ├── Header.tsx          # 상단 GNB (카테고리 탭, 알림, 사용자 메뉴)
+│   │   └── Sidebar.tsx         # 좌측 서브 내비게이션
+│   ├── ui/                     # 공용 UI 컴포넌트
+│   │   ├── Badge.tsx
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Callout.tsx
+│   │   ├── EmptyState.tsx
+│   │   ├── FloatingTeamButton.tsx  # 대시보드 전용 팀원 빠른 연락 버튼
+│   │   ├── FormField.tsx
+│   │   ├── MetaRow.tsx
+│   │   ├── SearchInput.tsx
+│   │   ├── StatusCard.tsx
+│   │   └── Widget.tsx          # 대시보드 위젯 래퍼
+│   ├── dashboard/
+│   └── org-chart/
+├── pages/                      # 뷰 단위 페이지 컴포넌트
+├── data/
+│   └── user.ts                 # 현재 로그인 사용자 mock + 결재선 자동 생성 로직
+├── constants/
+│   └── mockData.ts             # 전역 mock 데이터
+├── types/
+│   └── index.ts                # MainCategory / SubView 타입 정의
+└── App.tsx                     # 라우팅 및 레이아웃 루트
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 시작하기
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 사전 요구 사항
+
+- Node.js 18+
+- pnpm
+
+### 설치 및 실행
+
+```bash
+# 의존성 설치
+pnpm install
+
+# 개발 서버 실행
+pnpm dev
 ```
+
+브라우저에서 `http://localhost:5173` 접속 후 로그인 화면에서 아무 값이나 입력하면 진입할 수 있습니다.
+
+### 빌드
+
+```bash
+pnpm build
+```
+
+---
+
+## 설계 원칙
+
+- **컴포넌트 재사용**: `Widget`, `Card`, `Badge`, `StatusCard` 등 공용 UI 원자 컴포넌트 기반으로 일관된 디자인 유지
+- **반응형 레이아웃**: Tailwind `sm:` / `md:` / `lg:` 브레이크포인트 전략으로 다양한 해상도 대응
+- **단방향 상태 흐름**: `App.tsx`의 `currentView` 상태를 중심으로 한 단순 라우팅 구조
+- **Mock 데이터 분리**: `src/data/`, `src/constants/`에 데이터 로직을 분리해 실제 API 연동 시 최소 변경으로 대응 가능
+
+---
+
+## 현재 상태
+
+> 이 프로젝트는 **UI/UX 프로토타입**으로, 모든 데이터는 mock 데이터를 사용합니다.  
+> 실제 서버 연동 및 인증 로직은 포함되어 있지 않습니다.

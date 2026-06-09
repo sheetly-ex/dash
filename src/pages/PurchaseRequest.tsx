@@ -82,7 +82,7 @@ const PurchaseRequest: React.FC = () => {
     setItems(prev => prev.filter(i => i.id !== id));
   };
 
-  const updateItem = (id: number, field: keyof Item, value: any) => {
+  const updateItem = (id: number, field: keyof Item, value: string | number) => {
     setItems(prev => prev.map(i => i.id === id ? { ...i, [field]: value } : i));
   };
 

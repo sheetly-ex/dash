@@ -62,7 +62,8 @@ const WorkSpec: React.FC = () => {
   );
 };
 
-function RoleItem({ icon, title, desc }: any) {
+interface RoleItemProps { icon: React.ReactNode; title: string; desc: string; }
+function RoleItem({ icon, title, desc }: RoleItemProps) {
   return (
     <div className="flex gap-4 group">
       <div className="w-10 h-10 rounded-md bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all shrink-0">
@@ -76,7 +77,7 @@ function RoleItem({ icon, title, desc }: any) {
   );
 }
 
-function SkillBadge({ label }: any) {
+function SkillBadge({ label }: { label: string }) {
   return (
     <span className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-md text-[12px] font-bold text-slate-600 hover:border-blue-200 hover:text-blue-600 transition-all cursor-default">
       {label}
@@ -84,7 +85,7 @@ function SkillBadge({ label }: any) {
   );
 }
 
-function Section({ title, children }: any) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
       <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">{title}</h4>
@@ -93,7 +94,7 @@ function Section({ title, children }: any) {
   );
 }
 
-function TaskItem({ text }: any) {
+function TaskItem({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-3 bg-slate-50/50 p-4 rounded-lg border border-transparent hover:border-slate-100 hover:bg-[#fafafa] transition-all group">
       <CheckCircle size={16} className="text-blue-500 mt-0.5 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity" />

@@ -2,11 +2,21 @@ import React, { useState } from 'react';
 import { CheckCircle2, Info } from 'lucide-react';
 import Widget from '../components/ui/Widget';
 import Card from '../components/ui/Card';
+import { useSettings } from '../contexts/SettingsContext';
+import type { TranslationKey } from '../i18n';
 
 type FacilityKey = 'HEALTHCARE' | 'MEETING_ROOM' | 'VEHICLE' | 'RESORT' | 'CAFETERIA' | 'CAMPING';
 
+const FACILITY_SIDEBAR_KEYS: Record<FacilityKey, TranslationKey> = {
+  HEALTHCARE: 'sidebar.healthcare',
+  MEETING_ROOM: 'sidebar.meetingRoom',
+  VEHICLE: 'sidebar.vehicle',
+  RESORT: 'sidebar.resort',
+  CAFETERIA: 'sidebar.cafeteria',
+  CAMPING: 'sidebar.camping',
+};
+
 interface FacilityConfig {
-  name: string;
   desc: string;
   color: string;
   capacity: string;
@@ -24,7 +34,6 @@ interface Resource {
 
 const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
   HEALTHCARE: {
-    name: '헬스 케어',
     desc: '사내 피트니스 센터 및 건강관리실',
     color: 'rose',
     capacity: '20명',
@@ -38,7 +47,6 @@ const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
     ],
   },
   MEETING_ROOM: {
-    name: '회의실',
     desc: '각 층별 회의실 및 화상회의실',
     color: 'blue',
     capacity: '최대 20명',
@@ -54,7 +62,6 @@ const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
     ],
   },
   VEHICLE: {
-    name: '법인 차량',
     desc: '출장 및 업무용 법인 차량 예약',
     color: 'indigo',
     capacity: '차종별 상이',
@@ -69,7 +76,6 @@ const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
     ],
   },
   RESORT: {
-    name: '속초 휴양소',
     desc: '동해 바다 뷰 임직원 전용 휴양소',
     color: 'emerald',
     capacity: '최대 10명',
@@ -83,7 +89,6 @@ const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
     ],
   },
   CAFETERIA: {
-    name: '카페테리아',
     desc: '구내식당 및 케이터링 서비스 예약',
     color: 'amber',
     capacity: '최대 100명',
@@ -97,7 +102,6 @@ const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
     ],
   },
   CAMPING: {
-    name: '옥상 캠핑장',
     desc: '루프탑 캠핑 & 팀빌딩 공간',
     color: 'teal',
     capacity: '최대 30명',
@@ -112,20 +116,21 @@ const facilityConfigs: Record<FacilityKey, FacilityConfig> = {
   },
 };
 
-// Generate a simple calendar for June 2026
-const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
-// June 1 2026 is actually a Monday
-const june2026FirstDay = 1; // Monday
+const june2026FirstDay = 1;
 const june2026Days = 30;
 
-const fullyBooked = new Set([7, 8, 15]);
+const fullyBookedDays = new Set([7, 8, 15]);
 
 interface Props {
   facilityKey: FacilityKey;
 }
 
 const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
+  const { t, tArray } = useSettings();
+  const dayLabels = tArray('vacation.daysShort');
   const config = facilityConfigs[facilityKey];
+  const facilityName = t(FACILITY_SIDEBAR_KEYS[facilityKey]);
+
   const [selectedResource, setSelectedResource] = useState(config.resources[0].id);
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
@@ -147,27 +152,24 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
 
   return (
     <div className="space-y-8">
-      {/* Info Bar */}
       <div className="grid grid-cols-3 gap-6">
-        <Card noPadding className="p-5 border-slate-100 shadow-none">
-          <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">위치</div>
-          <div className="text-[14px] font-black text-slate-800">{config.location}</div>
+        <Card noPadding className="p-5 border-app-muted shadow-none">
+          <div className="text-[10px] font-black text-app-muted uppercase tracking-widest mb-1">{t('reservation.location')}</div>
+          <div className="text-[14px] font-black text-app">{config.location}</div>
         </Card>
-        <Card noPadding className="p-5 border-slate-100 shadow-none">
-          <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">수용 인원</div>
-          <div className="text-[14px] font-black text-slate-800">{config.capacity}</div>
+        <Card noPadding className="p-5 border-app-muted shadow-none">
+          <div className="text-[10px] font-black text-app-muted uppercase tracking-widest mb-1">{t('reservation.capacity')}</div>
+          <div className="text-[14px] font-black text-app">{config.capacity}</div>
         </Card>
-        <Card noPadding className="p-5 border-slate-100 shadow-none">
-          <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">운영 시간</div>
-          <div className="text-[14px] font-black text-slate-800">{config.timeSlots[0]} ~ {config.timeSlots[config.timeSlots.length - 1]}</div>
+        <Card noPadding className="p-5 border-app-muted shadow-none">
+          <div className="text-[10px] font-black text-app-muted uppercase tracking-widest mb-1">{t('reservation.operatingHours')}</div>
+          <div className="text-[14px] font-black text-app">{config.timeSlots[0]} ~ {config.timeSlots[config.timeSlots.length - 1]}</div>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10">
-        {/* Booking Form */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Resource Selection */}
-          <Widget title="공간 선택" color={config.color as any}>
+          <Widget title={`${facilityName} · ${t('reservation.selectResource')}`} color={config.color as 'rose' | 'blue' | 'indigo' | 'emerald' | 'amber' | 'teal'}>
             <div className="grid grid-cols-1 gap-3 mt-2">
               {config.resources.map(r => (
                 <button
@@ -175,15 +177,15 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
                   onClick={() => setSelectedResource(r.id)}
                   className={`flex items-center justify-between p-4 rounded border transition-all cursor-pointer text-left ${
                     selectedResource === r.id
-                      ? `border-2 ${colorBorder[config.color]} ring-4 bg-[#fafafa]`
-                      : 'border-slate-100 bg-slate-50/50 hover:bg-[#fafafa] hover:border-slate-200'
+                      ? `border-2 ${colorBorder[config.color]} ring-4 bg-surface-elevated`
+                      : 'border-app-muted bg-surface-muted/50 hover:bg-surface-elevated hover:border-app'
                   }`}
                 >
                   <div>
-                    <div className={`text-[14px] font-black ${selectedResource === r.id ? colorText[config.color] : 'text-slate-700'}`}>
+                    <div className={`text-[14px] font-black ${selectedResource === r.id ? colorText[config.color] : 'text-app-secondary'}`}>
                       {r.label}
                     </div>
-                    {r.sublabel && <div className="text-[11px] font-bold text-slate-400 mt-0.5">{r.sublabel}</div>}
+                    {r.sublabel && <div className="text-[11px] font-bold text-app-muted mt-0.5">{r.sublabel}</div>}
                   </div>
                   {selectedResource === r.id && (
                     <CheckCircle2 size={18} className={colorText[config.color]} />
@@ -193,25 +195,28 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
             </div>
           </Widget>
 
-          {/* Calendar */}
-          <Widget title="날짜 선택 — 2026년 6월" color="slate">
+          <Widget title={`${t('reservation.selectDate')} — ${t('calendar.monthYear')}`} color="slate">
             <div className="mt-4">
               <div className="grid grid-cols-7 mb-2">
-                {DAYS.map(d => (
-                  <div key={d} className={`text-center text-[10px] font-black uppercase tracking-widest py-2 ${d === '일' ? 'text-rose-400' : d === '토' ? 'text-blue-400' : 'text-slate-400'}`}>
+                {dayLabels.map((d, i) => (
+                  <div
+                    key={i}
+                    className={`text-center text-[10px] font-black uppercase tracking-widest py-2 ${
+                      i === 0 ? 'text-rose-400' : i === 6 ? 'text-blue-400' : 'text-app-muted'
+                    }`}
+                  >
                     {d}
                   </div>
                 ))}
               </div>
               <div className="grid grid-cols-7 gap-1">
-                {/* Padding for first day */}
                 {Array.from({ length: june2026FirstDay }).map((_, i) => (
                   <div key={`pad-${i}`} />
                 ))}
                 {Array.from({ length: june2026Days }, (_, i) => i + 1).map(day => {
                   const dayOfWeek = (june2026FirstDay + day - 1) % 7;
                   const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-                  const isBooked = fullyBooked.has(day);
+                  const isBooked = fullyBookedDays.has(day);
                   const isPast = day < 4;
                   const isSelected = selectedDate === day;
                   const isDisabled = isWeekend || isBooked || isPast;
@@ -225,17 +230,17 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
                         isSelected
                           ? `${colorBg[config.color]} text-white border-transparent shadow-md`
                           : isBooked
-                          ? 'bg-slate-50 text-slate-200 border-slate-100 cursor-not-allowed'
+                          ? 'bg-surface-muted text-app-muted border-app-muted cursor-not-allowed'
                           : isPast
-                          ? 'text-slate-200 border-transparent cursor-not-allowed'
+                          ? 'text-app-muted border-transparent cursor-not-allowed'
                           : isWeekend
-                          ? 'text-slate-200 border-transparent cursor-not-allowed'
-                          : 'text-slate-700 border-transparent hover:bg-slate-100 hover:border-slate-200'
+                          ? 'text-app-muted border-transparent cursor-not-allowed'
+                          : 'text-app-secondary border-transparent hover:bg-surface-muted hover:border-app'
                       }`}
                     >
                       {day}
                       {isBooked && !isWeekend && (
-                        <div className="text-[7px] font-black text-slate-300 leading-none">만석</div>
+                        <div className="text-[7px] font-black text-app-muted leading-none">{t('reservation.fullyBooked')}</div>
                       )}
                     </button>
                   );
@@ -244,9 +249,11 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
             </div>
           </Widget>
 
-          {/* Time Slot */}
           {selectedDate && (
-            <Widget title={`시간 선택 — 6월 ${selectedDate}일`} color={config.color as any}>
+            <Widget
+              title={`${t('reservation.selectTime')} — 6월 ${selectedDate}일`}
+              color={config.color as 'rose' | 'blue' | 'indigo' | 'emerald' | 'amber' | 'teal'}
+            >
               <div className="flex flex-wrap gap-2 mt-3">
                 {config.timeSlots.map(slot => (
                   <button
@@ -255,7 +262,7 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
                     className={`px-4 py-2.5 rounded text-[12px] font-black transition-all cursor-pointer border ${
                       selectedSlot === slot
                         ? `${colorBg[config.color]} text-white border-transparent shadow-md`
-                        : 'bg-[#fafafa] text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
+                        : 'bg-surface-elevated text-app-secondary border-app hover:border-blue-300 hover:text-blue-600'
                     }`}
                   >
                     {slot}
@@ -266,39 +273,39 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
           )}
         </div>
 
-        {/* Summary Panel */}
         <div className="space-y-6">
-          <Widget title="예약 안내" color="slate">
+          <Widget title={t('reservation.bookingNotice')} color="slate">
             <div className="space-y-3 mt-2">
               {config.rules.map((rule, i) => (
                 <div key={i} className="flex items-start gap-2">
-                  <Info size={13} className="text-slate-300 shrink-0 mt-0.5" />
-                  <span className="text-[12px] font-bold text-slate-500 leading-snug">{rule}</span>
+                  <Info size={13} className="text-app-muted shrink-0 mt-0.5" />
+                  <span className="text-[12px] font-bold text-app-muted leading-snug">{rule}</span>
                 </div>
               ))}
             </div>
           </Widget>
 
-          {/* Booking Summary */}
-          <Card noPadding className="p-6 border-slate-100">
-            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">예약 요약</div>
+          <Card noPadding className="p-6 border-app-muted">
+            <div className="text-[10px] font-black text-app-muted uppercase tracking-widest mb-4">
+              {t('reservation.bookingSummary')}
+            </div>
             <div className="space-y-3 mb-6">
-              <SummaryRow label="시설" value={config.resources.find(r => r.id === selectedResource)?.label ?? '-'} />
-              <SummaryRow label="날짜" value={selectedDate ? `2026. 06. ${String(selectedDate).padStart(2, '0')}` : '-'} />
-              <SummaryRow label="시간" value={selectedSlot ?? '-'} />
+              <SummaryRow label={t('reservation.selectResource')} value={config.resources.find(r => r.id === selectedResource)?.label ?? '-'} />
+              <SummaryRow label={t('reservation.selectDate')} value={selectedDate ? `2026. 06. ${String(selectedDate).padStart(2, '0')}` : '-'} />
+              <SummaryRow label={t('reservation.selectTime')} value={selectedSlot ?? '-'} />
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">인원</span>
+                <span className="text-[11px] font-black text-app-muted uppercase tracking-widest">{t('reservation.headcount')}</span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setHeadCount(Math.max(1, headCount - 1))}
-                    className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:border-blue-300 hover:text-blue-600 transition-all cursor-pointer bg-[#fafafa] flex items-center justify-center font-black"
+                    className="w-7 h-7 rounded border border-app text-app-muted hover:border-blue-300 hover:text-blue-600 transition-all cursor-pointer bg-surface-elevated flex items-center justify-center font-black"
                   >
                     -
                   </button>
-                  <span className="text-[14px] font-black text-slate-800 w-6 text-center">{headCount}</span>
+                  <span className="text-[14px] font-black text-app w-6 text-center">{headCount}</span>
                   <button
                     onClick={() => setHeadCount(headCount + 1)}
-                    className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:border-blue-300 hover:text-blue-600 transition-all cursor-pointer bg-[#fafafa] flex items-center justify-center font-black"
+                    className="w-7 h-7 rounded border border-app text-app-muted hover:border-blue-300 hover:text-blue-600 transition-all cursor-pointer bg-surface-elevated flex items-center justify-center font-black"
                   >
                     +
                   </button>
@@ -309,19 +316,18 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
               className={`w-full py-4 text-white text-[12px] font-black uppercase tracking-widest rounded-md transition-all cursor-pointer border-none shadow-lg flex items-center justify-center gap-2 ${
                 selectedDate && selectedSlot
                   ? `${colorBg[config.color]} hover:opacity-90`
-                  : 'bg-slate-200 cursor-not-allowed'
+                  : 'bg-surface-muted cursor-not-allowed'
               }`}
               disabled={!selectedDate || !selectedSlot}
             >
-              <CheckCircle2 size={16} /> 예약 신청
+              <CheckCircle2 size={16} /> {t('reservation.applyBooking')}
             </button>
           </Card>
 
-          {/* My Reservations */}
-          <Widget title="나의 예약 현황" color="indigo">
+          <Widget title={t('reservation.myBookingStatus')} color="indigo">
             <div className="space-y-3 mt-2">
-              <MyReservation date="06.10" slot="10:00" resource="소회의실 B" />
-              <MyReservation date="06.18" slot="오후" resource="피트니스 센터" />
+              <MyReservation date="06.10" slot="10:00" resource="소회의실 B" cancelLabel={t('reservation.cancelBooking')} />
+              <MyReservation date="06.18" slot="오후" resource="피트니스 센터" cancelLabel={t('reservation.cancelBooking')} />
             </div>
           </Widget>
         </div>
@@ -333,20 +339,20 @@ const ReservationDetail: React.FC<Props> = ({ facilityKey }) => {
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{label}</span>
-      <span className="text-[13px] font-bold text-slate-700">{value}</span>
+      <span className="text-[11px] font-black text-app-muted uppercase tracking-widest">{label}</span>
+      <span className="text-[13px] font-bold text-app-secondary">{value}</span>
     </div>
   );
 }
 
-function MyReservation({ date, slot, resource }: { date: string; slot: string; resource: string }) {
+function MyReservation({ date, slot, resource, cancelLabel }: { date: string; slot: string; resource: string; cancelLabel: string }) {
   return (
-    <div className="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-100">
+    <div className="flex items-center justify-between p-3 bg-surface-muted rounded border border-app-muted">
       <div>
-        <div className="text-[12px] font-black text-slate-700">{resource}</div>
-        <div className="text-[10px] font-bold text-slate-400 mt-0.5">{date} · {slot}</div>
+        <div className="text-[12px] font-black text-app-secondary">{resource}</div>
+        <div className="text-[10px] font-bold text-app-muted mt-0.5">{date} · {slot}</div>
       </div>
-      <button className="text-[10px] font-black text-rose-400 hover:text-rose-600 cursor-pointer border-none bg-transparent">취소</button>
+      <button className="text-[10px] font-black text-rose-400 hover:text-rose-600 cursor-pointer border-none bg-transparent">{cancelLabel}</button>
     </div>
   );
 }

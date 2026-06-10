@@ -20,16 +20,16 @@ export const MetaRow: React.FC<MetaRowProps> = ({
   if (layout === 'vertical') {
     return (
       <div className={className}>
-        <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{label}</div>
-        <div className="text-[14px] font-black text-slate-800">{value}</div>
+        <div className="text-[10px] font-black text-app-muted uppercase tracking-widest mb-1">{label}</div>
+        <div className="text-[14px] font-black text-app">{value}</div>
       </div>
     );
   }
 
   return (
-    <div className={`flex items-center justify-between ${bordered ? 'py-2 border-b border-slate-50 last:border-0' : ''} ${className}`}>
-      <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{label}</span>
-      <span className="text-[13px] font-bold text-slate-700">{value}</span>
+    <div className={`flex items-center justify-between ${bordered ? 'py-2 border-b border-app-muted last:border-0' : ''} ${className}`}>
+      <span className="text-[11px] font-black text-app-muted uppercase tracking-widest">{label}</span>
+      <span className="text-[13px] font-bold text-app-secondary">{value}</span>
     </div>
   );
 };
@@ -59,7 +59,7 @@ export const MetaGrid: React.FC<MetaGridProps> = ({
   return (
     <div className={`grid ${colClass} gap-3 md:gap-4 ${className}`}>
       {items.map(({ label, value }) => (
-        <Card key={label} noPadding className="p-4 border-slate-100 shadow-none">
+        <Card key={label} noPadding className="p-4 border-app-muted shadow-none">
           <MetaRow label={label} value={value} layout="vertical" />
         </Card>
       ))}

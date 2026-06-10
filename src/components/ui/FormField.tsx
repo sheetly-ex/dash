@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from './Card';
+import { useSettings } from '../../contexts/SettingsContext';
 
 // ── Shared label ─────────────────────────────────────────────
 interface FormLabelProps {
@@ -9,8 +10,8 @@ interface FormLabelProps {
 
 export const FormLabel: React.FC<FormLabelProps> = ({ children, hint }) => (
   <div className="flex items-center gap-2 mb-3">
-    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{children}</span>
-    {hint && <span className="text-[10px] font-bold text-slate-300 normal-case tracking-normal">{hint}</span>}
+    <span className="text-[10px] font-black text-app-muted uppercase tracking-widest">{children}</span>
+    {hint && <span className="text-[10px] font-bold text-app-muted normal-case tracking-normal">{hint}</span>}
   </div>
 );
 
@@ -30,7 +31,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   children,
   className = '',
 }) => (
-  <Card noPadding className={`p-6 border-slate-100 shadow-none ${className}`}>
+  <Card noPadding className={`p-6 border-app-muted shadow-none ${className}`}>
     {(label || action) && (
       <div className="flex items-center justify-between mb-4">
         {label && <FormLabel hint={hint}>{label}</FormLabel>}
@@ -43,7 +44,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
 
 // ── Shared input styles ───────────────────────────────────────
 const inputBase =
-  'w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded text-sm font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-[#fafafa] transition-all';
+  'w-full px-4 py-3 bg-surface-muted border border-app rounded text-sm font-bold text-app placeholder:text-app-muted focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 focus:bg-surface-elevated transition-all';
 
 // ── TextField ────────────────────────────────────────────────
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -67,7 +68,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   );
 
   if (wrapInCard) {
-    return <Card noPadding className="p-6 border-slate-100 shadow-none">{inner}</Card>;
+    return <Card noPadding className="p-6 border-app-muted shadow-none">{inner}</Card>;
   }
   return <>{inner}</>;
 };
@@ -89,6 +90,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   value,
   ...props
 }) => {
+  const { t } = useSettings();
   const inner = (
     <>
       {label && <FormLabel hint={hint}>{label}</FormLabel>}
@@ -98,13 +100,13 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         {...props}
       />
       {showCharCount && (
-        <div className="text-[10px] font-bold text-slate-300 italic mt-1">{String(value ?? '').length}자</div>
+        <div className="text-[10px] font-bold text-app-muted italic mt-1">{String(value ?? '').length}{t('common.charSuffix')}</div>
       )}
     </>
   );
 
   if (wrapInCard) {
-    return <Card noPadding className="p-6 border-slate-100 shadow-none">{inner}</Card>;
+    return <Card noPadding className="p-6 border-app-muted shadow-none">{inner}</Card>;
   }
   return <>{inner}</>;
 };

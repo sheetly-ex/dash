@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --app-bg: #fafafa;
+    --surface: #fafafa;
+    --surface-elevated: #ffffff;
+    --surface-muted: #f8fafc;
+    --border: #e2e8f0;
+    --border-muted: #f1f5f9;
+    --text: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --hover: #f1f5f9;
+    --active-bg: #f0f9ff;
+    --active-text: #1d4ed8;
+  }
+
+  .dark {
+    --app-bg: #0b1120;
+    --surface: #0f172a;
+    --surface-elevated: #1e293b;
+    --surface-muted: #1e293b;
+    --border: #334155;
+    --border-muted: #1e293b;
+    --text: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --hover: #1e293b;
+    --active-bg: #172554;
+    --active-text: #60a5fa;
+  }
+
+  body {
+    background-color: var(--app-bg);
+    color: var(--text);
+  }
+}
+
+@layer utilities {
+  .bg-app { background-color: var(--app-bg); }
+  .bg-surface { background-color: var(--surface); }
+  .bg-surface-elevated { background-color: var(--surface-elevated); }
+  .bg-surface-muted { background-color: var(--surface-muted); }
+  .border-app { border-color: var(--border); }
+  .border-app-muted { border-color: var(--border-muted); }
+  .text-app { color: var(--text); }
+  .text-app-secondary { color: var(--text-secondary); }
+  .text-app-muted { color: var(--text-muted); }
+  .hover-surface:hover { background-color: var(--hover); }
+}

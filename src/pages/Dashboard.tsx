@@ -24,7 +24,9 @@ import {
 } from 'lucide-react';
 import Widget from '../components/ui/Widget';
 import FloatingTeamButton from '../components/ui/FloatingTeamButton';
-import { MAILS, NOTICES, APPROVALS } from '../constants/mockData';
+import { useSettings } from '../contexts/SettingsContext';
+import type { TranslationKey } from '../i18n';
+import { useLocalizedData, NOTICE_TAG_COLORS } from '../data/localized';
 import type { SubView } from '../types';
 
 // ── Widget IDs ──────────────────────────────────────────────────
@@ -58,67 +60,64 @@ function saveOrder(order: WidgetId[]) {
 // ── Sortable wrapper ────────────────────────────────────────────
 interface SortableItemProps {
   id: WidgetId;
-  children: (handleProps: React.HTMLAttributes<HTMLElement>) => React.ReactNode;
+  children: (dragListeners: React.HTMLAttributes<HTMLElement>, isDragging: boolean) => React.ReactNode;
 }
 
 function SortableItem({ id, children }: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const dragListeners = { ...attributes, ...listeners };
   return (
     <div
       ref={setNodeRef}
       className="h-full"
       style={{ transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0 : 1 }}
     >
-      {children({ ...attributes, ...listeners })}
+      {children(dragListeners, isDragging)}
     </div>
   );
 }
 
-function DragHandle(props: React.HTMLAttributes<HTMLElement>) {
-  return (
-    <button
-      {...props}
-      className="p-1.5 rounded text-slate-300 hover:text-slate-500 hover:bg-slate-100 transition-all cursor-grab active:cursor-grabbing touch-none border-none bg-transparent"
-      title="드래그하여 이동"
-    >
-      <GripVertical size={14} />
-    </button>
-  );
-}
+type Localized = ReturnType<typeof useLocalizedData>;
+
+type WidgetProps = {
+  dragListeners: React.HTMLAttributes<HTMLElement>;
+  isDragging?: boolean;
+  onMore?: () => void;
+  className?: string;
+  t: (key: TranslationKey) => string;
+  ld: Localized;
+};
 
 // ── 주요 업무 일정 ──────────────────────────────────────────────
-function ScheduleWidget({ handleProps, onMore, className }: WidgetProps) {
+function ScheduleWidget({ dragListeners, isDragging, onMore, className, t, ld }: WidgetProps) {
   return (
-    <Widget title="주요 업무 일정" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
+    <Widget title={t('dashboard.schedule')} dragListeners={dragListeners} isDragging={isDragging} onMoreClick={onMore} className={className}>
       <div className="flex flex-col gap-4 h-full">
         <div className="flex-1 space-y-3 overflow-hidden">
-          {[
-            { color: 'bg-blue-600', title: '주간 전략 회의', time: '09:30 · 대회의실 A' },
-            { color: 'bg-indigo-400', title: '파트너사 비즈니스 미팅', time: '14:00 · 외부 (강남역 인근)' },
-          ].map((s, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 bg-slate-50/60 rounded-md hover:bg-slate-100/60 cursor-pointer group transition-colors">
+          {ld.scheduleItems.map((s, i) => (
+            <div key={i} className="flex items-center gap-3 p-3 bg-surface-muted/60 rounded-md hover:bg-surface-muted/60 cursor-pointer group transition-colors">
               <div className={`w-1 h-8 rounded-full ${s.color} shrink-0`} />
               <div>
-                <div className="text-[13px] font-black text-slate-800 group-hover:text-blue-600 transition-colors">{s.title}</div>
-                <div className="text-[11px] font-bold text-slate-400 italic">{s.time}</div>
+                <div className="text-[13px] font-black text-app group-hover:text-blue-600 transition-colors">{s.title}</div>
+                <div className="text-[11px] font-bold text-app-muted italic">{s.time}</div>
               </div>
             </div>
           ))}
         </div>
         <div className="grid grid-cols-2 gap-3 shrink-0">
-          <div className="p-3 bg-slate-50 rounded-md border border-slate-100">
+          <div className="p-3 bg-surface-muted rounded-md border border-app-muted">
             <div className="flex items-center gap-1.5 mb-1">
-              <CheckSquare size={12} className="text-slate-400" />
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">진행중 과업</span>
+              <CheckSquare size={12} className="text-app-muted" />
+              <span className="text-[9px] font-black text-app-muted uppercase tracking-widest">{t('dashboard.tasks')}</span>
             </div>
-            <span className="text-xl font-black text-slate-800">12<span className="text-xs ml-1 font-bold text-slate-400">개</span></span>
+            <span className="text-xl font-black text-app">12<span className="text-xs ml-1 font-bold text-app-muted">{t('dashboard.count')}</span></span>
           </div>
           <div className="p-3 bg-rose-50/60 rounded-md border border-rose-100/60">
             <div className="flex items-center gap-1.5 mb-1">
               <AlertTriangle size={12} className="text-rose-400" />
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">예정 마감</span>
+              <span className="text-[9px] font-black text-app-muted uppercase tracking-widest">{t('dashboard.deadline')}</span>
             </div>
-            <span className="text-xl font-black text-rose-500">03<span className="text-xs ml-1 font-bold text-slate-400">개</span></span>
+            <span className="text-xl font-black text-rose-500">03<span className="text-xs ml-1 font-bold text-app-muted">{t('dashboard.count')}</span></span>
           </div>
         </div>
       </div>
@@ -127,29 +126,29 @@ function ScheduleWidget({ handleProps, onMore, className }: WidgetProps) {
 }
 
 // ── 최근 메일 ───────────────────────────────────────────────────
-function MailWidget({ handleProps, onMore, className }: WidgetProps) {
+function MailWidget({ dragListeners, isDragging, onMore, className, t, ld }: WidgetProps) {
   return (
-    <Widget title="최근 메일 수신함" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
+    <Widget title={t('dashboard.mail')} dragListeners={dragListeners} isDragging={isDragging} onMoreClick={onMore} className={className}>
       <div className="flex flex-col h-full">
         <div className="flex-1 overflow-hidden space-y-0.5">
-          {MAILS.slice(0, 4).map((mail, idx) => (
-            <div key={idx} className="flex items-center gap-3 py-2.5 border-b border-slate-50 last:border-0 hover:bg-slate-50/50 -mx-2 px-2 rounded-md transition-colors cursor-pointer group">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${mail.isNew ? 'bg-blue-50' : 'bg-slate-50'}`}>
-                {mail.isNew ? <Mail size={13} className="text-blue-500" /> : <MailOpen size={13} className="text-slate-400" />}
+          {ld.mails.slice(0, 4).map((mail, idx) => (
+            <div key={idx} className="flex items-center gap-3 py-2.5 border-b border-app-muted last:border-0 hover:bg-surface-muted/50 -mx-2 px-2 rounded-md transition-colors cursor-pointer group">
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${mail.isNew ? 'bg-blue-50' : 'bg-surface-muted'}`}>
+                {mail.isNew ? <Mail size={13} className="text-blue-500" /> : <MailOpen size={13} className="text-app-muted" />}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-                  <span className={`text-[12px] ${mail.isNew ? 'font-black' : 'font-bold'} text-slate-800 truncate group-hover:text-blue-600 transition-colors`}>{mail.sender}</span>
-                  <span className="text-[10px] font-bold text-slate-300 shrink-0">{mail.time}</span>
+                  <span className={`text-[12px] ${mail.isNew ? 'font-black' : 'font-bold'} text-app truncate group-hover:text-blue-600 transition-colors`}>{mail.sender}</span>
+                  <span className="text-[10px] font-bold text-app-muted shrink-0">{mail.time}</span>
                 </div>
-                <p className="text-[11px] font-bold text-slate-400 truncate">{mail.title}</p>
+                <p className="text-[11px] font-bold text-app-muted truncate">{mail.title}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="pt-3 border-t border-slate-50 flex justify-center shrink-0">
-          <button className="flex items-center gap-1 text-[11px] font-black text-slate-400 hover:text-blue-600 transition-colors uppercase tracking-widest cursor-pointer border-none bg-transparent">
-            메일함 전체보기 <ChevronRight size={12} />
+        <div className="pt-3 border-t border-app-muted flex justify-center shrink-0">
+          <button className="flex items-center gap-1 text-[11px] font-black text-app-muted hover:text-blue-600 transition-colors uppercase tracking-widest cursor-pointer border-none bg-transparent">
+            {t('dashboard.mailViewAll')} <ChevronRight size={12} />
           </button>
         </div>
       </div>
@@ -158,23 +157,16 @@ function MailWidget({ handleProps, onMore, className }: WidgetProps) {
 }
 
 // ── 전사 공지사항 ───────────────────────────────────────────────
-const NOTICE_TAG_COLORS: Record<string, string> = {
-  '필독': 'bg-rose-50 text-rose-600',
-  '인사': 'bg-blue-50 text-blue-600',
-  '복지': 'bg-emerald-50 text-emerald-600',
-  'IT':   'bg-indigo-50 text-indigo-600',
-};
-
-function NoticeWidget({ handleProps, onMore, className }: WidgetProps) {
+function NoticeWidget({ dragListeners, isDragging, onMore, className, t, ld }: WidgetProps) {
   return (
-    <Widget title="전사 공지사항" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
+    <Widget title={t('dashboard.notice')} dragListeners={dragListeners} isDragging={isDragging} onMoreClick={onMore} className={className}>
       <div className="space-y-0.5 overflow-hidden h-full">
-        {NOTICES.map((notice, idx) => (
-          <div key={idx} className="flex items-center gap-3 py-2.5 border-b border-slate-50 last:border-0 hover:bg-slate-50/50 -mx-2 px-2 rounded-md transition-colors cursor-pointer group">
-            <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest shrink-0 ${NOTICE_TAG_COLORS[notice.category] ?? 'bg-slate-50 text-slate-500'}`}>
+        {ld.notices.map((notice, idx) => (
+          <div key={idx} className="flex items-center gap-3 py-2.5 border-b border-app-muted last:border-0 hover:bg-surface-muted/50 -mx-2 px-2 rounded-md transition-colors cursor-pointer group">
+            <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest shrink-0 ${NOTICE_TAG_COLORS[notice.category] ?? 'bg-surface-muted text-app-muted'}`}>
               {notice.category}
             </span>
-            <p className="text-[12px] font-bold text-slate-700 truncate flex-1 group-hover:text-blue-600 transition-colors">{notice.title}</p>
+            <p className="text-[12px] font-bold text-app-secondary truncate flex-1 group-hover:text-blue-600 transition-colors">{notice.title}</p>
             {notice.important && <AlertCircle size={12} className="text-rose-400 shrink-0" />}
           </div>
         ))}
@@ -184,50 +176,50 @@ function NoticeWidget({ handleProps, onMore, className }: WidgetProps) {
 }
 
 // ── 결재 및 예약 현황 ───────────────────────────────────────────
-function ApprovalWidget({ handleProps, onMore, className }: WidgetProps) {
+function ApprovalWidget({ dragListeners, isDragging, onMore, className, t, ld }: WidgetProps) {
   return (
-    <Widget title="결재 및 예약 현황" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
+    <Widget title={t('dashboard.approval')} dragListeners={dragListeners} isDragging={isDragging} onMoreClick={onMore} className={className}>
       <div className="flex flex-col gap-3 h-full overflow-hidden">
         <div>
-          <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center justify-between">
-            <span>오늘의 일정</span><CalendarCheck size={11} className="text-slate-300" />
+          <div className="text-[9px] font-black text-app-muted uppercase tracking-widest mb-2 flex items-center justify-between">
+            <span>{t('dashboard.todaySchedule')}</span><CalendarCheck size={11} className="text-app-muted" />
           </div>
           <div className="space-y-1.5">
-            {[['bg-blue-500', '주간 전략 회의', '09:30'], ['bg-indigo-400', '파트너사 미팅', '14:00']].map(([c, t, tm], i) => (
-              <div key={i} className="flex items-center gap-2 text-[12px] font-bold text-slate-700 hover:text-blue-600 cursor-pointer transition-colors">
-                <div className={`w-1.5 h-1.5 rounded-full ${c} shrink-0`} />
-                <span className="flex-1 truncate">{t}</span>
-                <span className="text-[10px] text-slate-400 shrink-0">{tm}</span>
+            {ld.todaySchedule.map((s, i) => (
+              <div key={i} className="flex items-center gap-2 text-[12px] font-bold text-app-secondary hover:text-blue-600 cursor-pointer transition-colors">
+                <div className={`w-1.5 h-1.5 rounded-full ${s.color} shrink-0`} />
+                <span className="flex-1 truncate">{s.title}</span>
+                <span className="text-[10px] text-app-muted shrink-0">{s.time}</span>
               </div>
             ))}
           </div>
         </div>
-        <div className="border-t border-slate-50" />
+        <div className="border-t border-app-muted" />
         <div>
-          <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center justify-between">
-            <span>결재 현황</span><Briefcase size={11} className="text-slate-300" />
+          <div className="text-[9px] font-black text-app-muted uppercase tracking-widest mb-2 flex items-center justify-between">
+            <span>{t('dashboard.approvalStatus')}</span><Briefcase size={11} className="text-app-muted" />
           </div>
           <div className="space-y-1.5">
-            {APPROVALS.map((a, idx) => (
+            {ld.approvals.map((a, idx) => (
               <div key={idx} className="flex items-center gap-2 cursor-pointer group">
-                <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${a.urgent ? 'bg-rose-400' : 'bg-slate-200'}`} />
-                <span className="text-[12px] font-bold text-slate-700 group-hover:text-blue-600 transition-colors flex-1">{a.label}</span>
-                <span className={`text-[11px] font-black ${a.urgent ? 'text-rose-500' : 'text-slate-400'}`}>{a.value}</span>
+                <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${a.urgent ? 'bg-rose-400' : 'bg-surface-muted'}`} />
+                <span className="text-[12px] font-bold text-app-secondary group-hover:text-blue-600 transition-colors flex-1">{a.label}</span>
+                <span className={`text-[11px] font-black ${a.urgent ? 'text-rose-500' : 'text-app-muted'}`}>{a.value}</span>
               </div>
             ))}
           </div>
         </div>
-        <div className="border-t border-slate-50" />
+        <div className="border-t border-app-muted" />
         <div>
-          <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center justify-between">
-            <span>오늘의 예약</span><Users size={11} className="text-slate-300" />
+          <div className="text-[9px] font-black text-app-muted uppercase tracking-widest mb-2 flex items-center justify-between">
+            <span>{t('dashboard.todayReservation')}</span><Users size={11} className="text-app-muted" />
           </div>
           <div className="space-y-1.5">
-            {[['bg-blue-100', '402호 회의실', '14:00'], ['bg-slate-100', '법인차량-04', '16:00']].map(([c, t, tm], i) => (
-              <div key={i} className="flex items-center gap-2 text-[12px] font-bold text-slate-700 hover:text-blue-600 cursor-pointer transition-colors group">
-                <div className={`w-1.5 h-1.5 rounded-full ${c} shrink-0`} />
-                <span className="flex-1 truncate">{t}</span>
-                <span className="text-[10px] text-slate-400 shrink-0">{tm}</span>
+            {ld.todayReservations.map((s, i) => (
+              <div key={i} className="flex items-center gap-2 text-[12px] font-bold text-app-secondary hover:text-blue-600 cursor-pointer transition-colors group">
+                <div className={`w-1.5 h-1.5 rounded-full ${s.color} shrink-0`} />
+                <span className="flex-1 truncate">{s.title}</span>
+                <span className="text-[10px] text-app-muted shrink-0">{s.time}</span>
               </div>
             ))}
           </div>
@@ -238,15 +230,6 @@ function ApprovalWidget({ handleProps, onMore, className }: WidgetProps) {
 }
 
 // ── Google Drive ────────────────────────────────────────────────
-const DRIVE_FILES = [
-  { name: '2026 Q2 사업계획서.pptx', type: 'ppt',    updated: '어제',   size: '4.2 MB' },
-  { name: '경영지원팀',              type: 'folder', updated: '2일 전', size: '—' },
-  { name: '2026 예산안_최종.xlsx',   type: 'xls',    updated: '3일 전', size: '1.8 MB' },
-  { name: '인사 규정 개정안.docx',   type: 'doc',    updated: '1주 전', size: '890 KB' },
-  { name: '팀 워크샵 사진 모음',     type: 'folder', updated: '2주 전', size: '—' },
-  { name: '온보딩 가이드_v3.pdf',    type: 'pdf',    updated: '3주 전', size: '2.1 MB' },
-];
-
 const FILE_ICON_COLOR: Record<string, string> = {
   ppt:    'text-orange-400',
   xls:    'text-emerald-500',
@@ -255,24 +238,24 @@ const FILE_ICON_COLOR: Record<string, string> = {
   folder: 'text-yellow-400',
 };
 
-function DriveWidget({ handleProps, onMore, className }: WidgetProps) {
+function DriveWidget({ dragListeners, isDragging, onMore, className, t, ld }: WidgetProps) {
   return (
-    <Widget title="Google Drive" headerExtra={<DragHandle {...handleProps} />} onMoreClick={onMore} className={className}>
+    <Widget title={t('dashboard.drive')} dragListeners={dragListeners} isDragging={isDragging} onMoreClick={onMore} className={className}>
       <div className="space-y-0.5 overflow-y-auto h-full">
-        {DRIVE_FILES.map((f, i) => (
+        {ld.driveFiles.map((f, i) => (
           <div
             key={i}
-            className="flex items-center gap-3 py-2.5 px-1 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors group border-b border-slate-50 last:border-0"
+            className="flex items-center gap-3 py-2.5 px-1 rounded-lg hover:bg-surface-muted cursor-pointer transition-colors group border-b border-app-muted last:border-0"
           >
             {f.type === 'folder'
               ? <Folder size={17} className={`${FILE_ICON_COLOR[f.type]} shrink-0`} />
-              : <File   size={17} className={`${FILE_ICON_COLOR[f.type] ?? 'text-slate-300'} shrink-0`} />
+              : <File   size={17} className={`${FILE_ICON_COLOR[f.type] ?? 'text-app-muted'} shrink-0`} />
             }
             <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-bold text-slate-700 truncate group-hover:text-blue-600 transition-colors">{f.name}</p>
-              <p className="text-[10px] text-slate-300">{f.updated} · {f.size}</p>
+              <p className="text-[12px] font-bold text-app-secondary truncate group-hover:text-blue-600 transition-colors">{f.name}</p>
+              <p className="text-[10px] text-app-muted">{f.updated} · {f.size}</p>
             </div>
-            <ChevronRight size={13} className="text-slate-200 group-hover:text-blue-400 shrink-0 transition-colors" />
+            <ChevronRight size={13} className="text-app-muted group-hover:text-blue-400 shrink-0 transition-colors" />
           </div>
         ))}
       </div>
@@ -281,50 +264,38 @@ function DriveWidget({ handleProps, onMore, className }: WidgetProps) {
 }
 
 // ── 빈 섹션 ─────────────────────────────────────────────────────
-function EmptyWidget({ handleProps, className }: WidgetProps) {
+function EmptyWidget({ dragListeners, isDragging, className, t }: WidgetProps) {
   return (
-    <Widget title="빈 섹션" headerExtra={<DragHandle {...handleProps} />} headerRight={<span />} className={className}>
+    <Widget title={t('dashboard.empty')} dragListeners={dragListeners} isDragging={isDragging} headerRight={<span />} className={className}>
       <div className="flex flex-col items-center justify-center h-full text-center">
-        <div className="w-14 h-14 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center mb-3">
-          <Plus size={22} className="text-slate-300" />
+        <div className="w-14 h-14 bg-surface-muted border-2 border-dashed border-app rounded-xl flex items-center justify-center mb-3">
+          <Plus size={22} className="text-app-muted" />
         </div>
-        <p className="text-[12px] font-black text-slate-400 mb-1">비어있는 섹션</p>
-        <p className="text-[11px] font-bold text-slate-300">위젯을 드래그하여 배치하거나<br/>새 위젯을 추가할 수 있습니다</p>
+        <p className="text-[12px] font-black text-app-muted mb-1">{t('dashboard.emptyDesc')}</p>
+        <p className="text-[11px] font-bold text-app-muted whitespace-pre-line">{t('dashboard.emptyHint')}</p>
       </div>
     </Widget>
   );
 }
 
 // ── 위젯 맵 ─────────────────────────────────────────────────────
-type WidgetProps = { handleProps: React.HTMLAttributes<HTMLElement>; onMore?: () => void; className?: string };
-
-const WIDGET_COMPONENTS: Record<WidgetId, (p: WidgetProps) => React.ReactNode> = {
-  schedule: p => <ScheduleWidget {...p} />,
-  mail:     p => <MailWidget {...p} />,
-  notice:   p => <NoticeWidget {...p} />,
-  approval: p => <ApprovalWidget {...p} />,
-  drive:    p => <DriveWidget {...p} />,
-  empty:    p => <EmptyWidget {...p} />,
+const WIDGET_TITLE_KEYS: Record<WidgetId, TranslationKey> = {
+  schedule: 'dashboard.schedule',
+  mail:     'dashboard.mail',
+  notice:   'dashboard.notice',
+  approval: 'dashboard.approval',
+  drive:    'dashboard.drive',
+  empty:    'dashboard.empty',
 };
 
-const WIDGET_TITLES: Record<WidgetId, string> = {
-  schedule: '주요 업무 일정',
-  mail:     '최근 메일 수신함',
-  notice:   '전사 공지사항',
-  approval: '결재 및 예약 현황',
-  drive:    'Google Drive',
-  empty:    '빈 섹션',
-};
-
-// ── 드래그 ghost ────────────────────────────────────────────────
-function DragOverlayCard({ id }: { id: WidgetId }) {
+function DragOverlayCard({ id, t }: { id: WidgetId; t: (key: TranslationKey) => string }) {
   return (
-    <div className="bg-[#fafafa] border-2 border-blue-200 rounded-[0.5rem] p-6 shadow-2xl shadow-blue-500/10 opacity-95 rotate-1 scale-[1.02]">
+    <div className="bg-surface-elevated border-2 border-blue-200 rounded-[0.5rem] p-6 shadow-2xl shadow-blue-500/10 opacity-95 rotate-1 scale-[1.02]">
       <div className="flex items-center gap-2 mb-3">
         <GripVertical size={14} className="text-blue-400" />
-        <span className="text-[12px] font-black text-blue-600 uppercase tracking-widest">{WIDGET_TITLES[id]}</span>
+        <span className="text-[12px] font-black text-blue-600 uppercase tracking-widest">{t(WIDGET_TITLE_KEYS[id])}</span>
       </div>
-      <div className="h-20 bg-slate-50 rounded-md animate-pulse" />
+      <div className="h-20 bg-surface-muted rounded-md animate-pulse" />
     </div>
   );
 }
@@ -335,8 +306,21 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ setCurrentView }) => {
+  const { t } = useSettings();
+  const ld = useLocalizedData();
   const [order, setOrder] = useState<WidgetId[]>(loadOrder);
   const [activeId, setActiveId] = useState<WidgetId | null>(null);
+
+  const widgetProps = { t, ld };
+
+  const widgetComponents: Record<WidgetId, (p: WidgetProps) => React.ReactNode> = {
+    schedule: p => <ScheduleWidget {...p} {...widgetProps} />,
+    mail:     p => <MailWidget {...p} {...widgetProps} />,
+    notice:   p => <NoticeWidget {...p} {...widgetProps} />,
+    approval: p => <ApprovalWidget {...p} {...widgetProps} />,
+    drive:    p => <DriveWidget {...p} {...widgetProps} />,
+    empty:    p => <EmptyWidget {...p} t={t} ld={ld} />,
+  };
 
   const widgetNavMap: Partial<Record<WidgetId, () => void>> = {
     schedule: () => setCurrentView('CALENDAR'),
@@ -346,7 +330,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setCurrentView }) => {
   };
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(PointerSensor, { activationConstraint: { delay: 300, tolerance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
@@ -380,14 +364,14 @@ const Dashboard: React.FC<DashboardProps> = ({ setCurrentView }) => {
         >
           {order.map(id => (
             <SortableItem key={id} id={id}>
-              {handleProps => WIDGET_COMPONENTS[id]({ handleProps, onMore: widgetNavMap[id], className: 'h-full' })}
+              {(dragListeners, isDragging) => widgetComponents[id]({ dragListeners, isDragging, onMore: widgetNavMap[id], className: 'h-full', t, ld })}
             </SortableItem>
           ))}
         </div>
       </SortableContext>
 
       <DragOverlay dropAnimation={{ duration: 200, easing: 'ease-out' }}>
-        {activeId ? <DragOverlayCard id={activeId} /> : null}
+        {activeId ? <DragOverlayCard id={activeId} t={t} /> : null}
       </DragOverlay>
 
       <FloatingTeamButton />

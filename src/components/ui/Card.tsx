@@ -1,9 +1,7 @@
 import React from 'react';
 
-interface CardProps {
+interface CardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   children: React.ReactNode;
-  className?: string;
-  onClick?: () => void;
   hoverable?: boolean;
   noPadding?: boolean;
 }
@@ -13,10 +11,11 @@ const Card: React.FC<CardProps> = ({
   className = '',
   onClick,
   hoverable = true,
-  noPadding = false
+  noPadding = false,
+  ...rest
 }) => {
-  const baseStyles = "bg-[#fafafa] border border-slate-100 shadow-sm transition-all duration-300";
-  const hoverStyles = hoverable ? "hover:shadow-xl hover:-translate-y-1 cursor-pointer" : "";
+  const baseStyles = "bg-surface-elevated border border-app-muted shadow-sm transition-all duration-300";
+  const hoverStyles = hoverable ? "hover:shadow-md cursor-pointer" : "";
   const paddingStyles = noPadding ? "" : "p-6 md:p-8";
   const roundedStyles = "rounded-[0.5rem] md:rounded-[0.5rem]";
 
@@ -24,6 +23,7 @@ const Card: React.FC<CardProps> = ({
     <div
       className={`${baseStyles} ${hoverStyles} ${paddingStyles} ${roundedStyles} ${className}`}
       onClick={onClick}
+      {...rest}
     >
       {children}
     </div>

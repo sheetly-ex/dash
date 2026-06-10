@@ -12,7 +12,7 @@ interface SearchInputProps {
 const SearchInput: React.FC<SearchInputProps> = ({
   value,
   onChange,
-  placeholder = '검색...',
+  placeholder = '',
   size = 'lg',
   className = '',
 }) => {
@@ -25,14 +25,14 @@ const SearchInput: React.FC<SearchInputProps> = ({
     <div className={`relative ${className}`}>
       <Search
         size={iconSize}
-        className={`absolute ${iconPos} top-1/2 -translate-y-1/2 text-slate-400`}
+        className={`absolute ${iconPos} top-1/2 -translate-y-1/2 text-app-muted`}
       />
       <input
         type="text"
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full bg-slate-50 border border-slate-100 rounded ${padding} ${textSize} font-bold text-slate-700 placeholder:text-slate-300 focus:bg-[#fafafa] focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 transition-all outline-none`}
+        className={`w-full bg-surface-muted border border-app-muted rounded ${padding} ${textSize} font-bold text-app-secondary placeholder:text-app-muted focus:bg-surface-elevated focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 transition-all outline-none`}
       />
     </div>
   );

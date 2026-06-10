@@ -25,7 +25,7 @@ const borderColors: Record<StatusCardColor, string> = {
   emerald: 'border-emerald-100',
   indigo:  'border-indigo-100',
   rose:    'border-rose-100',
-  slate:   'border-slate-100',
+  slate:   'border-app-muted',
   amber:   'border-amber-100',
 };
 
@@ -34,7 +34,7 @@ const iconColors: Record<StatusCardColor, string> = {
   emerald: 'text-emerald-600 bg-emerald-50',
   indigo:  'text-indigo-600 bg-indigo-50',
   rose:    'text-rose-600 bg-rose-50',
-  slate:   'text-slate-600 bg-slate-50',
+  slate:   'text-app-secondary bg-surface-muted',
   amber:   'text-amber-600 bg-amber-50',
 };
 
@@ -49,30 +49,30 @@ const StatusCard: React.FC<StatusCardProps> = ({
   className = '',
 }) => (
   <Card
-    className={`p-5 bg-[#fafafa] hover:shadow-lg transition-all border shadow-sm ${highlight ? 'border-blue-500 shadow-blue-500/10' : borderColors[color]} ${className}`}
+    className={`p-5 bg-surface-elevated hover:shadow-lg transition-all border shadow-sm ${highlight ? 'border-blue-500 shadow-blue-500/10' : borderColors[color]} ${className}`}
     noPadding
   >
     <div className="flex items-center justify-between mb-5">
       <div className="flex items-center gap-2.5">
         <div className={`p-2 rounded ${iconColors[color]}`}>{icon}</div>
-        <span className="text-[11px] font-black text-slate-800 uppercase tracking-wider">{title}</span>
+        <span className="text-[11px] font-black text-app uppercase tracking-wider">{title}</span>
       </div>
-      <span className={`text-[12px] font-black ${highlight ? 'text-blue-600 bg-blue-50' : 'text-slate-500 bg-slate-50'} px-2 py-0.5 rounded-sm`}>
+      <span className={`text-[12px] font-black ${highlight ? 'text-blue-600 bg-blue-50' : 'text-app-muted bg-surface-muted'} px-2 py-0.5 rounded-sm`}>
         {value}
       </span>
     </div>
 
     <div className="space-y-3">
       {items.length === 0 ? (
-        <div className="text-[11px] font-bold text-slate-300 py-2 italic text-center">{emptyMessage}</div>
+        <div className="text-[11px] font-bold text-app-muted py-2 italic text-center">{emptyMessage}</div>
       ) : (
         items.map(item => (
           <div key={item.id} className="flex items-center justify-between group cursor-pointer">
-            <div className="text-[12px] font-bold text-slate-500 group-hover:text-blue-600 transition-colors truncate pr-2">
+            <div className="text-[12px] font-bold text-app-muted group-hover:text-blue-600 transition-colors truncate pr-2">
               {item.title}
             </div>
             {item.secondary && (
-              <div className="text-[10px] font-black text-slate-400 italic shrink-0">
+              <div className="text-[10px] font-black text-app-muted italic shrink-0">
                 {item.secondary}
               </div>
             )}

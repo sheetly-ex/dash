@@ -17,7 +17,7 @@ const variantStyles: Record<BadgeVariant, string> = {
   emerald: 'text-emerald-600 bg-emerald-50 border-emerald-100',
   rose:    'text-rose-600 bg-rose-50 border-rose-100',
   amber:   'text-amber-600 bg-amber-50 border-amber-100',
-  slate:   'text-slate-400 bg-slate-50 border-slate-100',
+  slate:   'text-app-muted bg-surface-muted border-app-muted',
   teal:    'text-teal-600 bg-teal-50 border-teal-100',
 };
 
@@ -40,17 +40,23 @@ const Badge: React.FC<BadgeProps> = ({
   </span>
 );
 
-// Pre-mapped status → variant for approval/request flows
+// Pre-mapped status key → variant for approval/request flows
 export const STATUS_VARIANT: Record<string, BadgeVariant> = {
-  '결재대기': 'rose',
-  '결재중':   'indigo',
-  '검토중':   'amber',
-  '승인완료': 'emerald',
-  '완료':     'slate',
-  '반려':     'slate',
-  '진행중':   'blue',
-  '달성':     'emerald',
-  '지연':     'rose',
+  pending: 'rose',
+  inProgress: 'indigo',
+  reviewing: 'amber',
+  approved: 'emerald',
+  done: 'slate',
+  rejected: 'slate',
+  onTrack: 'blue',
+  achieved: 'emerald',
+  delayed: 'rose',
+  inUse: 'blue',
+  reserved: 'emerald',
+  completed: 'slate',
+  purchase: 'blue',
+  certificate: 'emerald',
+  waiting: 'slate',
 };
 
 export default Badge;

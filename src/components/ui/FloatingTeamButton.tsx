@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Users, Mail, Phone, X, ChevronUp } from 'lucide-react';
+import { useSettings } from '../../contexts/SettingsContext';
 
 const TEAM_MEMBERS = [
   { name: '김팀장', rank: '팀장',  phone: '010-1234-5678', email: 'kim.tj@i-on.com' },
@@ -10,6 +11,7 @@ const TEAM_MEMBERS = [
 ];
 
 const FloatingTeamButton: React.FC = () => {
+  const { t } = useSettings();
   const [open, setOpen] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -31,59 +33,54 @@ const FloatingTeamButton: React.FC = () => {
   return (
     <div ref={ref} className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3">
       {open && (
-        <div className="w-68 bg-[#fafafa] rounded-xl shadow-2xl border border-slate-200 overflow-hidden">
-          {/* 헤더 */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+        <div className="w-68 bg-surface-elevated rounded-xl shadow-2xl border border-app overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-app-muted">
             <div className="flex items-center gap-2">
-              <Users size={13} className="text-slate-400" />
-              <span className="text-[11px] font-black text-slate-600 uppercase tracking-widest">우리 팀</span>
+              <Users size={13} className="text-app-muted" />
+              <span className="text-[11px] font-black text-app-secondary uppercase tracking-widest">{t('team.title')}</span>
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="p-1 rounded-md text-slate-300 hover:text-slate-600 hover:bg-slate-100 transition-colors border-none bg-transparent cursor-pointer"
+              className="p-1 rounded-md text-app-muted hover:text-app-secondary hover:bg-surface-muted transition-colors border-none bg-transparent cursor-pointer"
             >
               <X size={13} />
             </button>
           </div>
 
-          {/* 팀원 목록 */}
           <ul className="divide-y divide-slate-100">
             {TEAM_MEMBERS.map(member => (
-              <li key={member.email} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors">
-                {/* 아바타 */}
-                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
-                  <span className="text-[11px] font-black text-slate-500">{member.name[0]}</span>
+              <li key={member.email} className="flex items-center gap-3 px-4 py-3 hover:bg-surface-muted transition-colors">
+                <div className="w-8 h-8 rounded-full bg-surface-muted flex items-center justify-center shrink-0">
+                  <span className="text-[11px] font-black text-app-muted">{member.name[0]}</span>
                 </div>
 
-                {/* 이름 + 직급 + 전화 */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-black text-slate-700">
+                  <p className="text-[13px] font-black text-app-secondary">
                     {member.name}
-                    <span className="ml-1.5 text-[10px] font-bold text-slate-400">{member.rank}</span>
+                    <span className="ml-1.5 text-[10px] font-bold text-app-muted">{member.rank}</span>
                   </p>
                   <button
                     onClick={() => handleCopyPhone(member.phone)}
                     className="flex items-center gap-1 mt-0.5 border-none bg-transparent p-0 cursor-pointer group"
-                    title="클릭하여 복사"
+                    title={t('team.clickToCopy')}
                   >
-                    <Phone size={10} className="text-slate-300 group-hover:text-slate-500 transition-colors" />
+                    <Phone size={10} className="text-app-muted group-hover:text-app-muted transition-colors" />
                     <span className={`text-[11px] font-medium transition-colors ${
                       copiedPhone === member.phone
                         ? 'text-emerald-500'
-                        : 'text-slate-400 group-hover:text-slate-600'
+                        : 'text-app-muted group-hover:text-app-secondary'
                     }`}>
-                      {copiedPhone === member.phone ? '복사됨!' : member.phone}
+                      {copiedPhone === member.phone ? t('team.copied') : member.phone}
                     </span>
                   </button>
                 </div>
 
-                {/* 메일 버튼 */}
                 <a
                   href={`https://mail.google.com/mail/?view=cm&to=${member.email}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 rounded-lg text-slate-300 hover:text-slate-600 hover:bg-slate-100 transition-colors"
-                  title={`${member.name}에게 메일 보내기`}
+                  className="p-2 rounded-lg text-app-muted hover:text-app-secondary hover:bg-surface-muted transition-colors"
+                  title={`${t('team.sendMailTo')} ${member.name}`}
                 >
                   <Mail size={14} />
                 </a>
@@ -93,15 +90,14 @@ const FloatingTeamButton: React.FC = () => {
         </div>
       )}
 
-      {/* 플로팅 버튼 */}
       <button
         onClick={() => setOpen(v => !v)}
         className={`w-13 h-13 rounded-full shadow-lg flex items-center justify-center border-none cursor-pointer transition-all duration-200 ${
           open
-            ? 'bg-slate-700 scale-95'
-            : 'bg-slate-800 hover:bg-slate-700 hover:scale-105 hover:shadow-xl'
+            ? 'bg-surface-elevated scale-95'
+            : 'bg-surface-elevated hover:bg-surface-elevated'
         }`}
-        title="팀원 빠른 연락"
+        title={t('team.quickContact')}
       >
         {open
           ? <ChevronUp size={20} className="text-white" />

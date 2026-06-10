@@ -12,6 +12,10 @@ interface WidgetProps {
   headerRight?: React.ReactNode;
   /** Click handler for the default ChevronRight button */
   onMoreClick?: () => void;
+  /** Long-press drag listeners applied to the whole card */
+  dragListeners?: React.HTMLAttributes<HTMLElement>;
+  /** Whether this widget is currently being dragged */
+  isDragging?: boolean;
   className?: string;
 }
 
@@ -21,13 +25,19 @@ const Widget: React.FC<WidgetProps> = ({
   headerExtra,
   headerRight,
   onMoreClick,
+  dragListeners,
+  isDragging = false,
   className = '',
 }) => (
-  <Card className={`hover:shadow-2xl hover:-translate-y-2 duration-500 group flex flex-col ${className}`}>
+  <Card
+    className={`group flex flex-col touch-none select-none ${dragListeners ? 'cursor-grab active:cursor-grabbing' : ''} ${isDragging ? 'shadow-xl ring-2 ring-blue-200 scale-[1.02]' : ''} ${className}`}
+    hoverable={!dragListeners}
+    {...dragListeners}
+  >
     <div className="flex items-center justify-between mb-6 shrink-0">
       <div className="flex items-center gap-2">
         {headerExtra}
-        <h3 className="font-black text-slate-800 text-sm uppercase tracking-widest">
+        <h3 className="font-black text-app text-sm uppercase tracking-widest">
           {title}
         </h3>
       </div>
@@ -35,12 +45,13 @@ const Widget: React.FC<WidgetProps> = ({
         onMoreClick ? (
           <button
             onClick={onMoreClick}
-            className="p-2 bg-slate-50 rounded-md group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors cursor-pointer border-none text-slate-400 hover:text-blue-600"
+            onPointerDown={e => e.stopPropagation()}
+            className="p-2 bg-surface-muted rounded-md group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors cursor-pointer border-none text-app-muted hover:text-blue-600"
           >
             <ChevronRight size={16} />
           </button>
         ) : (
-          <div className="p-2 bg-slate-50 rounded-md text-slate-300">
+          <div className="p-2 bg-surface-muted rounded-md text-app-muted">
             <ChevronRight size={16} />
           </div>
         )

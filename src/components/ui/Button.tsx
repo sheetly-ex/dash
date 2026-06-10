@@ -24,21 +24,21 @@ const sizeStyles: Record<ButtonSize, string> = {
 function variantStyles(variant: ButtonVariant, color: ButtonColor): string {
   if (variant === 'primary') {
     const map: Record<ButtonColor, string> = {
-      blue:    'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none',
-      emerald: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/20 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none',
+      blue:    'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20 disabled:bg-surface-muted disabled:text-app-muted disabled:shadow-none',
+      emerald: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/20 disabled:bg-surface-muted disabled:text-app-muted disabled:shadow-none',
       rose:    'bg-rose-600 text-white hover:bg-rose-700 shadow-lg shadow-rose-500/20',
-      slate:   'bg-slate-800 text-white hover:bg-slate-900',
+      slate:   'bg-surface-elevated text-white hover:bg-surface-elevated',
     };
     return map[color];
   }
   if (variant === 'secondary') {
-    return 'bg-slate-100 text-slate-600 hover:bg-slate-200';
+    return 'bg-surface-muted text-app-secondary hover:bg-surface-muted';
   }
   if (variant === 'outline') {
-    return 'bg-[#fafafa] border border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-600';
+    return 'bg-surface-elevated border border-app text-app-muted hover:border-blue-300 hover:text-blue-600';
   }
   if (variant === 'ghost') {
-    return 'bg-transparent text-slate-400 hover:text-blue-600';
+    return 'bg-transparent text-app-muted hover:text-blue-600';
   }
   if (variant === 'danger') {
     return 'bg-rose-600 text-white hover:bg-rose-700';

@@ -15,7 +15,7 @@ const variantStyles: Record<CalloutVariant, { wrap: string; title: string; text:
   info:    { wrap: 'bg-blue-50 border-blue-100',    title: 'text-blue-700',    text: 'text-blue-500',    dot: '·' },
   warning: { wrap: 'bg-amber-50 border-amber-100',  title: 'text-amber-700',   text: 'text-amber-600',   dot: '·' },
   success: { wrap: 'bg-emerald-50 border-emerald-100', title: 'text-emerald-700', text: 'text-emerald-600', dot: '·' },
-  neutral: { wrap: 'bg-slate-50 border-slate-100',  title: 'text-slate-600',   text: 'text-slate-400',   dot: '·' },
+  neutral: { wrap: 'bg-surface-muted border-app-muted',  title: 'text-app-secondary',   text: 'text-app-muted',   dot: '·' },
 };
 
 const Callout: React.FC<CalloutProps> = ({

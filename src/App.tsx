@@ -4,28 +4,28 @@ import { useSettings } from './contexts/SettingsContext';
 import type { TranslationKey } from './i18n';
 import Header from './components/layout/Header';
 import Sidebar from './components/layout/Sidebar';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Calendar from './pages/Calendar';
-import OrgChart from './pages/OrgChart';
-import Vacation from './pages/Vacation';
-import WorkSpec from './pages/WorkSpec';
-import Profile from './pages/Profile';
-import OKR from './pages/OKR';
-import ReservationHome from './pages/ReservationHome';
-import ReservationDetail from './pages/ReservationDetail';
-import BoardHome from './pages/BoardHome';
-import BoardList from './pages/BoardList';
-import RequestHome from './pages/RequestHome';
-import PurchaseRequest from './pages/PurchaseRequest';
-import CertificateRequest from './pages/CertificateRequest';
-import PurchaseRequestDetail from './pages/PurchaseRequestDetail';
-import CertificateRequestDetail from './pages/CertificateRequestDetail';
-import ContactHome from './pages/ContactHome';
-import ContactRetired from './pages/ContactRetired';
-import ContactClient from './pages/ContactClient';
-import ApprovalWrite from './pages/ApprovalWrite';
-import ApprovalList from './pages/ApprovalList';
+import Login from './pages/login/Login';
+import Dashboard from './pages/my-page/Dashboard';
+import Calendar from './pages/my-page/Calendar';
+import OrgChart from './pages/my-page/OrgChart';
+import Vacation from './pages/my-page/Vacation';
+import WorkSpec from './pages/my-page/WorkSpec';
+import Profile from './pages/my-page/Profile';
+import OKR from './pages/my-page/OKR';
+import ReservationHome from './pages/reservation/ReservationHome';
+import ReservationDetail from './pages/reservation/ReservationDetail';
+import BoardHome from './pages/board/BoardHome';
+import BoardList from './pages/board/BoardList';
+import RequestHome from './pages/request/RequestHome';
+import PurchaseRequest from './pages/request/PurchaseRequest';
+import CertificateRequest from './pages/request/CertificateRequest';
+import PurchaseRequestDetail from './pages/request/PurchaseRequestDetail';
+import CertificateRequestDetail from './pages/request/CertificateRequestDetail';
+import ContactHome from './pages/contact/ContactHome';
+import ContactRetired from './pages/contact/ContactRetired';
+import ContactClient from './pages/contact/ContactClient';
+import ApprovalWrite from './pages/approval/ApprovalWrite';
+import ApprovalList from './pages/approval/ApprovalList';
 
 const BREADCRUMB_KEYS: Record<SubView, [TranslationKey, TranslationKey]> = {
   DASHBOARD:            ['breadcrumb.myPage', 'breadcrumb.dashboard'],
@@ -65,7 +65,18 @@ function App() {
   const { t } = useSettings();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeCategory, setActiveCategory] = useState<MainCategory>('MY_PAGE');
-  const [currentView, setCurrentView] = useState<SubView>('DASHBOARD');
+  const [currentView, setCurrentViewRaw] = useState<SubView>('DASHBOARD');
+  const [boardInitialCategory, setBoardInitialCategory] = useState<string | undefined>();
+
+  const setCurrentView = (view: SubView) => {
+    setBoardInitialCategory(undefined);
+    setCurrentViewRaw(view);
+  };
+
+  const navigateToBoard = (view: SubView, category?: string) => {
+    setBoardInitialCategory(category);
+    setCurrentViewRaw(view);
+  };
 
   if (!isLoggedIn) {
     return <Login onLogin={() => setIsLoggedIn(true)} />;
@@ -99,11 +110,11 @@ function App() {
     if (currentView === 'RESORT') return <ReservationDetail facilityKey="RESORT" />;
     if (currentView === 'CAFETERIA') return <ReservationDetail facilityKey="CAFETERIA" />;
     if (currentView === 'CAMPING') return <ReservationDetail facilityKey="CAMPING" />;
-    if (currentView === 'BOARD_HOME') return <BoardHome setCurrentView={setCurrentView} />;
-    if (currentView === 'COLLECTIVE') return <BoardList boardKey="COLLECTIVE" />;
-    if (currentView === 'ION') return <BoardList boardKey="ION" />;
-    if (currentView === 'SUBSIDIARY_B') return <BoardList boardKey="SUBSIDIARY_B" />;
-    if (currentView === 'SUBSIDIARY_C') return <BoardList boardKey="SUBSIDIARY_C" />;
+    if (currentView === 'BOARD_HOME') return <BoardHome setCurrentView={setCurrentView} onNavigateBoard={navigateToBoard} />;
+    if (currentView === 'COLLECTIVE') return <BoardList boardKey="COLLECTIVE" initialCategory={boardInitialCategory} />;
+    if (currentView === 'ION') return <BoardList boardKey="ION" initialCategory={boardInitialCategory} />;
+    if (currentView === 'SUBSIDIARY_B') return <BoardList boardKey="SUBSIDIARY_B" initialCategory={boardInitialCategory} />;
+    if (currentView === 'SUBSIDIARY_C') return <BoardList boardKey="SUBSIDIARY_C" initialCategory={boardInitialCategory} />;
     if (currentView === 'REQUEST_HOME') return <RequestHome setCurrentView={setCurrentView} />;
     if (currentView === 'PURCHASE') return <PurchaseRequest />;
     if (currentView === 'CERTIFICATE') return <CertificateRequest />;
@@ -116,6 +127,7 @@ function App() {
   };
 
   const [crumbA, crumbB] = BREADCRUMB_KEYS[currentView] ?? ['breadcrumb.myPage', 'breadcrumb.dashboard'];
+  const isOrgChart = currentView === 'ORG_CHART';
 
   return (
     <div className="flex flex-col h-screen bg-app text-app font-sans overflow-hidden">
@@ -134,13 +146,13 @@ function App() {
         />
 
         <main className="flex-1 flex flex-col overflow-hidden bg-app">
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10 scrollbar-hide">
-            <div className="max-w-screen-2xl mx-auto space-y-4">
-              <div className="flex items-center gap-1.5 text-[10px] font-bold text-app-muted select-none">
+          <div className={`flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 scrollbar-hide ${isOrgChart ? 'overflow-auto' : 'overflow-y-auto'}`}>
+            <div className={`mx-auto space-y-4 ${isOrgChart ? 'max-w-none w-full' : 'max-w-screen-2xl'}`}>
+              <nav className="flex items-center gap-2 text-sm text-app-muted select-none" aria-label="breadcrumb">
                 <span>{t(crumbA)}</span>
-                <span>/</span>
-                <span className="text-app-muted">{t(crumbB)}</span>
-              </div>
+                <span className="text-app-muted/40">/</span>
+                <span className="text-app-secondary font-medium">{t(crumbB)}</span>
+              </nav>
               {renderMainContent()}
             </div>
           </div>

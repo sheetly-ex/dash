@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Send, Plus, X, ChevronDown, User, Search } from 'lucide-react';
-import { MetaGrid } from '../components/ui/MetaRow';
-import FormSection, { TextField, TextAreaField } from '../components/ui/FormField';
-import Button from '../components/ui/Button';
-import { useSettings } from '../contexts/SettingsContext';
-import { useLocalizedData } from '../data/localized';
+import { MetaGrid } from '../../components/ui/MetaRow';
+import FormSection, { TextField, TextAreaField } from '../../components/ui/FormField';
+import Button from '../../components/ui/Button';
+import { useSettings } from '../../contexts/SettingsContext';
+import { useLocalizedData } from '../../data/localized';
 
 const sampleApprovers = [
   { id: 1, name: '김팀장', dept: '경영지원팀', role: '팀장' },

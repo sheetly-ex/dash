@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FileText, Send, CheckCircle2, Clock } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
 
 const DOC_IDS = ['employment', 'career', 'income', 'salary', 'retirement', 'health'] as const;
 type DocId = (typeof DOC_IDS)[number];

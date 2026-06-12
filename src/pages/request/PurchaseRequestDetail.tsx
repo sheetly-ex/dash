@@ -3,14 +3,14 @@ import {
   ChevronLeft, Printer, XCircle, CheckCircle2, Clock,
   User, MessageSquare, RotateCcw
 } from 'lucide-react';
-import Card from '../components/ui/Card';
-import Widget from '../components/ui/Widget';
-import Badge, { STATUS_VARIANT } from '../components/ui/Badge';
-import { MetaGrid } from '../components/ui/MetaRow';
-import { currentUser, getApprovalLine } from '../data/user';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
-import type { SubView } from '../types';
+import Card from '../../components/ui/Card';
+import Widget from '../../components/ui/Widget';
+import Badge, { STATUS_VARIANT } from '../../components/ui/Badge';
+import { MetaGrid } from '../../components/ui/MetaRow';
+import { currentUser, getApprovalLine } from '../../data/user';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
+import type { SubView } from '../../types';
 
 interface Props {
   setCurrentView: (v: SubView) => void;

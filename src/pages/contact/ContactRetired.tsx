@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Phone, Mail, ChevronRight, Calendar, Briefcase } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import SearchInput from '../components/ui/SearchInput';
-import EmptyState from '../components/ui/EmptyState';
-import { useSettings } from '../contexts/SettingsContext';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import SearchInput from '../../components/ui/SearchInput';
+import EmptyState from '../../components/ui/EmptyState';
+import { useSettings } from '../../contexts/SettingsContext';
 
 const retiredContacts = [
   { id: 1, name: '이민준', pos: '전 부장', dept: '영업팀', retiredDate: '2025.12.31', email: 'mj.lee@personal.com', phone: '010-2233-4455', years: 8 },

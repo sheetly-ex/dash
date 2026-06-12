@@ -105,7 +105,9 @@ function SortableNavItem({ config, label, active, onClick, dragHint }: SortableN
 }
 
 function ProfileOptionBtn({
-  active, onClick, children,
+  active,
+  onClick,
+  children,
 }: {
   active: boolean;
   onClick: () => void;
@@ -115,9 +117,10 @@ function ProfileOptionBtn({
     <button
       onClick={onClick}
       className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-black transition-colors cursor-pointer border
-        ${active
-          ? 'bg-slate-800 text-white border-slate-800 dark:bg-blue-600 dark:border-blue-600'
-          : 'bg-surface-muted text-app-secondary border-app hover-surface'
+        ${
+          active
+            ? 'bg-slate-800 text-white border-slate-800 dark:bg-blue-600 dark:border-blue-600'
+            : 'bg-surface-muted text-app-secondary border-app hover-surface'
         }`}
     >
       {children}
@@ -182,7 +185,7 @@ const Header: React.FC<HeaderProps> = ({ activeCategory, onCategoryChange, onLog
 
   const orderedItems = useMemo(
     () => navOrder.map(id => NAV_ITEMS_DEFAULT.find(n => n.id === id)!).filter(Boolean),
-    [navOrder],
+    [navOrder]
   );
 
   return (
@@ -195,9 +198,7 @@ const Header: React.FC<HeaderProps> = ({ activeCategory, onCategoryChange, onLog
           tabIndex={0}
           onKeyDown={e => e.key === 'Enter' && onCategoryChange('MY_PAGE')}
         >
-          <div className="bg-slate-50 w-10 h-10 bg-surface-elevated rounded-md flex items-center justify-center">
-            <span className="text-blue-600 text-xs font-bold italic">Dash</span>
-          </div>
+          <span className="text-blue-600 text-sm font-bold italic">Dash</span>
         </div>
 
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -288,18 +289,30 @@ const Header: React.FC<HeaderProps> = ({ activeCategory, onCategoryChange, onLog
               <div className="px-4 py-3 border-b border-app-muted">
                 <div className="flex items-center gap-2 mb-2">
                   <Globe size={13} className="text-app-muted" />
-                  <span className="text-[10px] font-black text-app-muted uppercase tracking-widest">{t('common.language')}</span>
+                  <span className="text-[10px] font-black text-app-muted uppercase tracking-widest">
+                    {t('common.language')}
+                  </span>
                 </div>
                 <div className="flex gap-1.5">
-                  <ProfileOptionBtn active={language === 'ko'} onClick={() => setLanguage('ko')}>{t('common.korean')}</ProfileOptionBtn>
-                  <ProfileOptionBtn active={language === 'en'} onClick={() => setLanguage('en')}>{t('common.english')}</ProfileOptionBtn>
+                  <ProfileOptionBtn active={language === 'ko'} onClick={() => setLanguage('ko')}>
+                    {t('common.korean')}
+                  </ProfileOptionBtn>
+                  <ProfileOptionBtn active={language === 'en'} onClick={() => setLanguage('en')}>
+                    {t('common.english')}
+                  </ProfileOptionBtn>
                 </div>
               </div>
 
               <div className="px-4 py-3 border-b border-app-muted">
                 <div className="flex items-center gap-2 mb-2">
-                  {theme === 'light' ? <Sun size={13} className="text-app-muted" /> : <Moon size={13} className="text-app-muted" />}
-                  <span className="text-[10px] font-black text-app-muted uppercase tracking-widest">{t('common.theme')}</span>
+                  {theme === 'light' ? (
+                    <Sun size={13} className="text-app-muted" />
+                  ) : (
+                    <Moon size={13} className="text-app-muted" />
+                  )}
+                  <span className="text-[10px] font-black text-app-muted uppercase tracking-widest">
+                    {t('common.theme')}
+                  </span>
                 </div>
                 <div className="flex gap-1.5">
                   <ProfileOptionBtn active={theme === 'light'} onClick={() => setTheme('light')}>
@@ -349,7 +362,7 @@ function GoogleAppButton({
       <div className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 group-active:scale-95 shadow-xs border bg-surface-muted text-app-muted border-app-muted hover:bg-surface-muted hover:text-app">
         {icon}
       </div>
-      <div className="absolute top-18 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-200 origin-top bg-slate-900/95 backdrop-blur-md text-app-muted text-xs font-black py-2 px-3 rounded-md border border-slate-800 shadow-2xl pointer-events-none whitespace-nowrap z-50">
+      <div className="absolute top-18 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-200 origin-top bg-slate-900/95 backdrop-blur-md text-app-muted text-xs font-black py-2 px-3 rounded-md border border-slate-800 shadow-2xl pointer-events-none z-50">
         {label}
       </div>
     </a>
@@ -359,10 +372,31 @@ function GoogleAppButton({
 function IconGmail() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="4" width="20" height="16" rx="2" fill="white" stroke="#E0E0E0" strokeWidth="0.5" />
+      <rect
+        x="2"
+        y="4"
+        width="20"
+        height="16"
+        rx="2"
+        fill="white"
+        stroke="#E0E0E0"
+        strokeWidth="0.5"
+      />
       <rect x="2" y="4" width="20" height="2" rx="1" fill="white" />
-      <path d="M2 6L12 13L22 6" stroke="#EA4335" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M3 5.5L12 12.5L21 5.5" stroke="#EA4335" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path
+        d="M2 6L12 13L22 6"
+        stroke="#EA4335"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path
+        d="M3 5.5L12 12.5L21 5.5"
+        stroke="#EA4335"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -370,7 +404,10 @@ function IconGmail() {
 function IconGoogleChat() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="#00AC47" />
+      <path
+        d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z"
+        fill="#00AC47"
+      />
       <circle cx="8" cy="10" r="1.5" fill="white" />
       <circle cx="12" cy="10" r="1.5" fill="white" />
       <circle cx="16" cy="10" r="1.5" fill="white" />
@@ -381,12 +418,23 @@ function IconGoogleChat() {
 function IconGoogleCalendar() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="4" width="20" height="18" rx="2" fill="white" stroke="#E0E0E0" strokeWidth="0.5" />
+      <rect
+        x="2"
+        y="4"
+        width="20"
+        height="18"
+        rx="2"
+        fill="white"
+        stroke="#E0E0E0"
+        strokeWidth="0.5"
+      />
       <rect x="2" y="4" width="20" height="5" rx="2" fill="#1A73E8" />
       <rect x="2" y="7" width="20" height="2" fill="#1A73E8" />
       <rect x="7" y="2" width="2" height="4" rx="1" fill="#1A73E8" />
       <rect x="15" y="2" width="2" height="4" rx="1" fill="#1A73E8" />
-      <text x="12" y="18" textAnchor="middle" fontSize="7" fontWeight="900" fill="#1A73E8">31</text>
+      <text x="12" y="18" textAnchor="middle" fontSize="7" fontWeight="900" fill="#1A73E8">
+        31
+      </text>
     </svg>
   );
 }

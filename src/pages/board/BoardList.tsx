@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronRight, ChevronLeft, Pin, Paperclip, Eye, Calendar, User, Download, MessageSquare, ThumbsUp, CornerDownRight } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import SearchInput from '../components/ui/SearchInput';
-import EmptyState from '../components/ui/EmptyState';
-import Badge from '../components/ui/Badge';
-import { useSettings } from '../contexts/SettingsContext';
+import Widget from '../../components/ui/Widget';
+import SearchInput from '../../components/ui/SearchInput';
+import EmptyState from '../../components/ui/EmptyState';
+import Badge from '../../components/ui/Badge';
+import { useSettings } from '../../contexts/SettingsContext';
 
 interface BoardConfig {
   title: string;
@@ -343,14 +343,24 @@ function PostDetail({ post, boardTitle, onBack }: { post: Post; boardTitle: stri
 // ── 게시글 목록 ────────────────────────────────────────────────
 interface Props {
   boardKey: 'COLLECTIVE' | 'ION' | 'SUBSIDIARY_B' | 'SUBSIDIARY_C';
+  initialCategory?: string;
 }
 
-const BoardList: React.FC<Props> = ({ boardKey }) => {
+const BoardList: React.FC<Props> = ({ boardKey, initialCategory }) => {
   const { t } = useSettings();
   const config = boardConfigs[boardKey];
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState(ALL_CATEGORY);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+
+  useEffect(() => {
+    if (initialCategory && config.categories.includes(initialCategory)) {
+      setActiveCategory(initialCategory);
+    } else {
+      setActiveCategory(ALL_CATEGORY);
+    }
+    setSelectedPost(null);
+  }, [boardKey, initialCategory, config.categories]);
 
   const categoryLabel = (cat: string) => cat === ALL_CATEGORY ? t('board.all') : cat;
 

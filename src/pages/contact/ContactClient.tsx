@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Phone, Mail, ChevronRight, Globe, Building2, Star, UserPlus } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import SearchInput from '../components/ui/SearchInput';
-import EmptyState from '../components/ui/EmptyState';
-import Badge from '../components/ui/Badge';
-import { useSettings } from '../contexts/SettingsContext';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import SearchInput from '../../components/ui/SearchInput';
+import EmptyState from '../../components/ui/EmptyState';
+import Badge from '../../components/ui/Badge';
+import { useSettings } from '../../contexts/SettingsContext';
 
 const clients = [
   { id: 1, company: '삼성 SDS', name: '박진혁', pos: '수석 매니저', dept: '클라우드사업부', email: 'jh.park@sds.samsung.com', phone: '010-1122-3344', website: 'www.samsungsds.com', category: 'IT 파트너', starred: true },

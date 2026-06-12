@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useSettings } from '../contexts/SettingsContext';
+import { useSettings } from '../../contexts/SettingsContext';
 
 interface LoginProps {
   onLogin: () => void;
@@ -24,14 +24,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         shadow-[0_8px_32px_rgba(31,38,135,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
 
         <div className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center
-          bg-surface-elevated/30 dark:bg-surface-elevated/20 backdrop-blur-md border border-white/60 dark:border-white/15 shadow-sm">
-          <span className="text-blue-600 dark:text-blue-400 text-3xl font-black tracking-tight">dash</span>
+          bg-surface-elevated/30 dark:bg-surface-elevated/20 backdrop-blur-md  ">
+          <span className="text-blue-600 dark:text-blue-400 text-3xl font-bold tracking-tight">dash</span>
         </div>
 
-        <div className="mb-6 text-left relative">
-          <label className="text-[10px] font-black text-app-muted/80 uppercase tracking-widest block mb-2">
-            {t('login.subsidiary')}
-          </label>
+        <div className={`mb-6 text-left relative ${dropOpen ? 'z-30' : ''}`}>
           <button
             onClick={() => setDropOpen(v => !v)}
             className="w-full flex items-center justify-between px-4 py-3
@@ -44,16 +41,17 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <ChevronDown size={15} className={`text-app-muted transition-transform ${dropOpen ? 'rotate-180' : ''}`} />
           </button>
           {dropOpen && (
-            <ul className="absolute z-20 w-full mt-1.5 rounded-xl overflow-hidden
-              bg-surface-elevated/50 dark:bg-surface-elevated/90 backdrop-blur-xl border border-white/60 dark:border-white/15 shadow-lg">
+            <ul className="absolute z-30 w-full mt-1.5 rounded-xl overflow-hidden
+              bg-white/95 dark:bg-slate-800/95 backdrop-blur-2xl
+              border border-white/80 dark:border-white/20 shadow-xl shadow-black/10">
               {subsidiaries.map(s => (
                 <li key={s}>
                   <button
                     onClick={() => { setSubsidiary(s); setDropOpen(false); }}
                     className={`w-full text-left px-4 py-2.5 text-sm font-bold transition-colors cursor-pointer border-none
                       ${s === subsidiary
-                        ? 'bg-blue-500/15 dark:bg-blue-500/25 text-blue-700 dark:text-blue-300'
-                        : 'text-app-secondary hover:bg-surface-elevated/40 dark:hover:bg-surface-elevated/50'
+                        ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                        : 'text-app-secondary hover:bg-slate-50 dark:hover:bg-slate-700/60'
                       }`}
                   >
                     {s}

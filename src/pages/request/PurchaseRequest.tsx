@@ -1,14 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { Plus, Trash2, Send, ShoppingCart, ChevronDown, ChevronRight, User, X, Search } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import { MetaGrid } from '../components/ui/MetaRow';
-import FormSection, { FormLabel, TextAreaField } from '../components/ui/FormField';
-import Button from '../components/ui/Button';
-import Badge, { STATUS_VARIANT } from '../components/ui/Badge';
-import Callout from '../components/ui/Callout';
-import { currentUser, getApprovalLine } from '../data/user';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
+import Widget from '../../components/ui/Widget';
+import { MetaGrid } from '../../components/ui/MetaRow';
+import FormSection, { FormLabel, TextAreaField } from '../../components/ui/FormField';
+import Button from '../../components/ui/Button';
+import Badge, { STATUS_VARIANT } from '../../components/ui/Badge';
+import Callout from '../../components/ui/Callout';
+import { currentUser, getApprovalLine } from '../../data/user';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
 
 interface Item {
   id: number;

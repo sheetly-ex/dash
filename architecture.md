@@ -84,7 +84,14 @@ src/
 │   │   └── Widget.tsx          # 대시보드 위젯 래퍼
 │   ├── dashboard/
 │   └── org-chart/
-├── pages/                      # 뷰 단위 페이지 컴포넌트
+├── pages/                      # 뷰 단위 페이지 (도메인별 폴더)
+│   ├── login/
+│   ├── my-page/
+│   ├── approval/
+│   ├── reservation/
+│   ├── board/
+│   ├── request/
+│   └── contact/
 ├── data/
 │   └── user.ts                 # 현재 로그인 사용자 mock + 결재선 자동 생성 로직
 ├── constants/

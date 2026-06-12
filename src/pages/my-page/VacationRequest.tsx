@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Send, ChevronLeft, ChevronRight, Info } from 'lucide-react';
-import Card from '../components/ui/Card';
-import Widget from '../components/ui/Widget';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
+import Card from '../../components/ui/Card';
+import Widget from '../../components/ui/Widget';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
 
 type VacationTypeId = 'annual' | 'half_am' | 'half_pm' | 'sick' | 'family' | 'special';
 

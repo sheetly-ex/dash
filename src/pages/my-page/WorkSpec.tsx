@@ -1,8 +1,8 @@
 import React from 'react';
 import { FileText, Tag, User, Layers, CheckCircle } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import { useSettings } from '../contexts/SettingsContext';
-import { useLocalizedData } from '../data/localized';
+import Widget from '../../components/ui/Widget';
+import { useSettings } from '../../contexts/SettingsContext';
+import { useLocalizedData } from '../../data/localized';
 
 const WorkSpec: React.FC = () => {
   const { t } = useSettings();

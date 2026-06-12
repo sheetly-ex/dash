@@ -1,9 +1,9 @@
 import React from 'react';
 import { User, Mail, Phone, MapPin, Award } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import { useSettings } from '../contexts/SettingsContext';
-import { useLocalizedData } from '../data/localized';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import { useSettings } from '../../contexts/SettingsContext';
+import { useLocalizedData } from '../../data/localized';
 
 const Profile: React.FC = () => {
   const { t } = useSettings();
@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
 
           <Widget title={t('profile.career')} color="indigo">
             <div className="space-y-6">
-              <TimelineItem title="(주) A9" period="2022.01 - 현재" desc="클라우드 인프라 아키텍처 및 ERP 시스템 총괄 운영" isCurrent />
+              <TimelineItem title="i-on" period="2022.01 - 현재" desc="클라우드 인프라 아키텍처 및 ERP 시스템 총괄 운영" isCurrent />
               <TimelineItem title="(주) 글로벌 소프트웨어" period="2018.03 - 2021.12" desc="웹 서비스 백엔드 개발 및 API 설계" />
               <TimelineItem title="스타트업 랩스" period="2015.01 - 2018.02" desc="프론트엔드 UI/UX 개발 및 프로토타이핑" />
             </div>
@@ -61,21 +61,11 @@ const Profile: React.FC = () => {
             </div>
           </Widget>
 
-          <Widget title={t('profile.skills')} color="rose">
-            <div className="flex flex-wrap gap-2">
-              {['React', 'Node.js', 'AWS', 'Docker', 'PostgreSQL', 'Python'].map(skill => (
-                <span key={skill} className="px-3 py-1.5 bg-surface-muted border border-app-muted rounded text-[11px] font-black text-app-secondary">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </Widget>
-
           <Widget title={t('profile.salary')} color="rose">
             <div className="p-1 bg-surface-elevated rounded-lg text-center">
               <div className="text-[10px] font-black text-app-muted uppercase tracking-widest mb-1">{t('profile.salaryDone')}</div>
               <div className="text-xl font-black text-blue-400">₩ 75,000,000</div>
-              <button className="mt-3 text-[10px] font-black text-white/50 hover:text-white transition-colors uppercase underline underline-offset-4 cursor-pointer border-none bg-transparent">{t('profile.salaryContract')}</button>
+              <button className="mt-3 text-[10px] font-black text-app-muted hover:text-blue-500 transition-colors uppercase underline underline-offset-4 cursor-pointer border-none bg-transparent">{t('profile.salaryContract')}</button>
             </div>
           </Widget>
         </div>

@@ -22,12 +22,12 @@ import {
   Mail, MailOpen, ChevronRight, Users, Briefcase,
   CalendarCheck, Plus, File, Folder, AlertCircle,
 } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import FloatingTeamButton from '../components/ui/FloatingTeamButton';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
-import { useLocalizedData, NOTICE_TAG_COLORS } from '../data/localized';
-import type { SubView } from '../types';
+import Widget from '../../components/ui/Widget';
+import FloatingTeamButton from '../../components/ui/FloatingTeamButton';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
+import { useLocalizedData, NOTICE_TAG_COLORS } from '../../data/localized';
+import type { SubView } from '../../types';
 
 // ── Widget IDs ──────────────────────────────────────────────────
 const ALL_WIDGET_IDS = ['schedule', 'mail', 'notice', 'approval', 'drive', 'empty'] as const;

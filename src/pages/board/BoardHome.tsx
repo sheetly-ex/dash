@@ -1,12 +1,25 @@
 import React from 'react';
 import { Bell, ChevronRight, MessageCircle } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import { useSettings } from '../contexts/SettingsContext';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import { useSettings } from '../../contexts/SettingsContext';
 
-interface BoardHomeProps { setCurrentView: (v: 'COLLECTIVE' | 'ION') => void; }
+type BoardView = 'COLLECTIVE' | 'ION';
 
-const BoardHome: React.FC<BoardHomeProps> = ({ setCurrentView }) => {
+interface BoardHomeProps {
+  setCurrentView: (v: BoardView) => void;
+  onNavigateBoard: (view: BoardView, category?: string) => void;
+}
+
+const BOARD_SHORTCUTS: { label: string; count: string; board: BoardView; category: string }[] = [
+  { label: '사내 안내 사항', count: '12', board: 'ION', category: '사내안내' },
+  { label: '업무 매뉴얼', count: '45', board: 'ION', category: '업무매뉴얼' },
+  { label: '자유 게시판', count: '128', board: 'ION', category: '자유게시판' },
+  { label: '업무 자료실', count: '89', board: 'ION', category: '자료실' },
+  { label: '마케팅 자료실', count: '34', board: 'COLLECTIVE', category: '경영소식' },
+];
+
+const BoardHome: React.FC<BoardHomeProps> = ({ setCurrentView, onNavigateBoard }) => {
   const { t } = useSettings();
 
   return (
@@ -43,12 +56,15 @@ const BoardHome: React.FC<BoardHomeProps> = ({ setCurrentView }) => {
 
         <div className="space-y-8">
           <Widget title={t('board.shortcuts')} color="indigo">
-            <div className="grid grid-cols-1 gap-3">
-              <ShortcutItem label="사내 안내 사항" count="12" />
-              <ShortcutItem label="업무 매뉴얼" count="45" />
-              <ShortcutItem label="자유 게시판" count="128" />
-              <ShortcutItem label="업무 자료실" count="89" />
-              <ShortcutItem label="마케팅 자료실" count="34" />
+            <div className="grid grid-cols-1 gap-2">
+              {BOARD_SHORTCUTS.map(shortcut => (
+                <ShortcutItem
+                  key={shortcut.label}
+                  label={shortcut.label}
+                  count={shortcut.count}
+                  onClick={() => onNavigateBoard(shortcut.board, shortcut.category)}
+                />
+              ))}
             </div>
           </Widget>
 
@@ -111,9 +127,15 @@ function PostItem({ category, title, date, author, isNew = false }: PostItemProp
   );
 }
 
-function ShortcutItem({ label, count }: { label: string; count: string | number }) {
+function ShortcutItem({ label, count, onClick }: { label: string; count: string | number; onClick: () => void }) {
   return (
-    <div className="flex items-center justify-between p-4 bg-surface-muted/50 border border-app-muted/50 rounded-lg hover:bg-surface-elevated hover:border-blue-100 hover:shadow-lg hover:shadow-blue-500/5 transition-all cursor-pointer group">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
+      className="flex items-center justify-between p-3 bg-surface-muted/50 border border-gray-200 rounded-lg hover:bg-surface-elevated hover:border-blue-100 hover:shadow-lg hover:shadow-blue-500/5 transition-all cursor-pointer group"
+    >
       <span className="text-[13px] font-black text-app-secondary group-hover:text-blue-600 transition-colors">{label}</span>
       <span className="text-[10px] font-black text-app-muted group-hover:text-blue-400 transition-colors">{count}</span>
     </div>

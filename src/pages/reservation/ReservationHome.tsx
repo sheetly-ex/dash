@@ -1,11 +1,11 @@
 import React from 'react';
 import { LayoutDashboard, Users, Clock, CheckCircle2, AlertCircle, MapPin, Briefcase } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import StatusCard from '../components/ui/StatusCard';
-import Badge, { STATUS_VARIANT } from '../components/ui/Badge';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import StatusCard from '../../components/ui/StatusCard';
+import Badge, { STATUS_VARIANT } from '../../components/ui/Badge';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
 
 type UsageStatusKey = 'inUse' | 'reserved' | 'completed';
 

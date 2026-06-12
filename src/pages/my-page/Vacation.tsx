@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, CheckCircle2, AlertCircle, Plane, Send, ChevronLeft, ChevronRight, Info } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import StatusCard from '../components/ui/StatusCard';
-import Badge, { STATUS_VARIANT } from '../components/ui/Badge';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import StatusCard from '../../components/ui/StatusCard';
+import Badge, { STATUS_VARIANT } from '../../components/ui/Badge';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
 
 const VACATION_TYPE_IDS = ['annual', 'half_am', 'half_pm', 'sick', 'family', 'special'] as const;
 type VacationTypeId = (typeof VACATION_TYPE_IDS)[number];

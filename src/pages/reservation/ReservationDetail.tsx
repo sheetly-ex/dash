@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Info } from 'lucide-react';
-import Widget from '../components/ui/Widget';
-import Card from '../components/ui/Card';
-import { useSettings } from '../contexts/SettingsContext';
-import type { TranslationKey } from '../i18n';
+import Widget from '../../components/ui/Widget';
+import Card from '../../components/ui/Card';
+import { useSettings } from '../../contexts/SettingsContext';
+import type { TranslationKey } from '../../i18n';
 
 type FacilityKey = 'HEALTHCARE' | 'MEETING_ROOM' | 'VEHICLE' | 'RESORT' | 'CAFETERIA' | 'CAMPING';
 
